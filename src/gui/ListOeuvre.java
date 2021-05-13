@@ -61,7 +61,7 @@ public class ListOeuvre extends Form{
     Label nomeve;
     Label promo;
      EncodedImage enc;
-     String urlimg = " http://localhost/PI/IMG/";
+     String urlimg = "http://localhost/PI/IMG/";
     public ListOeuvre(Form previous, Resources res) {  
 super("Liste des favoris", BoxLayout.y());
 Toolbar tb = new Toolbar(true);  
@@ -123,8 +123,8 @@ Toolbar tb = new Toolbar(true);
         mesliste.setUIID("SelectBar");
         RadioButton mesfavoris = RadioButton.createToggle(" mes favoris ", barGroup);
          mesfavoris.setUIID("SelectBar");
-        RadioButton newo = RadioButton.createToggle("Ajouter oeuvre", barGroup);
-        newo.setUIID("SelectBar");
+        RadioButton monpanier = RadioButton.createToggle("voir panier", barGroup);
+        monpanier.setUIID("SelectBar");
        
        Label arrow = new Label(res.getImage("news-tab-down-arrow.png"), "Container");
 //       mesliste.addActionListener((e)-> {
@@ -134,7 +134,7 @@ Toolbar tb = new Toolbar(true);
 //       });
 //       
        add(LayeredLayout.encloseIn(
-                GridLayout.encloseIn(3, mesliste, mesfavoris, newo),
+                GridLayout.encloseIn(3, mesliste, mesfavoris, monpanier),
                 FlowLayout.encloseBottom(arrow)
         ));
         
@@ -146,7 +146,7 @@ Toolbar tb = new Toolbar(true);
         });
         bindButtonSelection1(previous, res,mesliste, arrow);
         bindButtonSelection2(previous, res, mesfavoris, arrow);
-        bindButtonSelection3(previous, res, newo, arrow);
+        bindButtonSelection3(previous, res, monpanier, arrow);
         // special case for rotation
 //        addOrientationListener(e -> {
 //          updateArrowPosition(barGroup.getRadioButton(barGroup.getSelectedIndex()), arrow);
@@ -156,8 +156,7 @@ Toolbar tb = new Toolbar(true);
            
                 
                enc = EncodedImage.createFromImage(Image.createImage(this.getWidth()/3, this.getWidth()/3),false);  
-                    URLImage  img = URLImage.createToStorage(enc, eee.getImg(), " http://localhost/PI/IMG/"+eee.getImg());
-           
+                    URLImage  img = URLImage.createToStorage(enc, eee.getImg(), urlimg+eee.getImg());
                     if (eee.getQuantite()==0){
 //            iv.setImage(img.scaled(400, 400));
                 addButton(previous, res , eee, img, eee.getNom(),false, eee.getPrix(),"hors stock",eee.getDescription());
@@ -232,18 +231,36 @@ private void addTab(Tabs swipe, Image img, Label spacer, String text) {
 //       }
        Label comments = new Label(quantité , "Label");
 //       FontImage.setMaterialIcon(likes, FontImage.MATERIAL_CHAT);
-       
-       
-       cnt.add(BorderLayout.CENTER, 
+        Button btnListTasks = new Button();
+        Style s = new Style(btnListTasks.getUnselectedStyle());
+        
+         //s.setFgColor(0xa65959);
+       FontImage ajouterP =FontImage.createMaterial(FontImage.MATERIAL_ADD_SHOPPING_CART, s);
+         btnListTasks.setIcon(ajouterP);
+         btnListTasks.setTextPosition(RIGHT);
+         
+       //  .setMaterialIcon(likes, FontImage.MATERIAL_CHAT);
+       cnt.add(BorderLayout.EAST, 
                BoxLayout.encloseY(
                        ta,
                        desc,
                        BoxLayout.encloseX(likes, comments)
                ));
-       add(cnt);
+     Container cnt1 = new Container(BoxLayout.x()); 
+     Container cnt2 = new Container(BoxLayout.xRight()); 
+       cnt1.add(cnt);           
+       cnt2.add(btnListTasks);
+        cnt1.add(cnt2); 
+       if(o.getQuantite()==0){
+           btnListTasks.setVisible(false);
+       }
+       add(cnt1);
+       
        image.addActionListener( e -> 
                new DetailOeuvre(previous, res, o).show()
        );
+//       raef
+//       btnListTasks.addActionListener
    }
     
     private void bindButtonSelection1(Form previous,Resources res, Button b, Label arrow) {
@@ -267,6 +284,7 @@ private void addTab(Tabs swipe, Image img, Label spacer, String text) {
        b.addActionListener(e -> {
             if(b.isSelected()) {
                 updateArrowPosition(b, arrow);
+                
             }
         });
     }

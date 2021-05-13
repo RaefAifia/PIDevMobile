@@ -65,7 +65,6 @@ public class OeuvrageService {
         return oeuvres;
     }
 
-      
    public ArrayList<Oeuvre> getListOeuvres(){       
         ConnectionRequest con = new ConnectionRequest();
     String url = Statics.BASE_URL+"/oeuvrage/aa/listO";

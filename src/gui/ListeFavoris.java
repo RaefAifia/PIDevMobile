@@ -52,7 +52,7 @@ public class ListeFavoris extends Form {
     Label nomeve;
     Label promo;
      EncodedImage enc;
-     String urlimg = " http://localhost/PIDevWEB/public/PI/IMG/";
+     String urlimg = "http://localhost/PIDevWEB/public/PI/IMG/";
     public ListeFavoris(Form previous, Resources res) {  
 super("liste des favoris", BoxLayout.y());
 Toolbar tb = new Toolbar(true);  
@@ -114,8 +114,8 @@ Toolbar tb = new Toolbar(true);
         mesliste.setUIID("SelectBar");
         RadioButton mesfavoris = RadioButton.createToggle(" mes favoris ", barGroup);
          mesfavoris.setUIID("SelectBar");
-        RadioButton newo = RadioButton.createToggle("Ajouter oeuvre", barGroup);
-        newo.setUIID("SelectBar");
+        RadioButton monpanier = RadioButton.createToggle("voir panier", barGroup);
+        monpanier.setUIID("SelectBar");
        
        Label arrow = new Label(res.getImage("news-tab-down-arrow.png"), "Container");
 //       mesliste.addActionListener((e)-> {
@@ -125,7 +125,7 @@ Toolbar tb = new Toolbar(true);
 //       });
 //       
        add(LayeredLayout.encloseIn(
-                GridLayout.encloseIn(3, mesliste, mesfavoris, newo),
+                GridLayout.encloseIn(3, mesliste, mesfavoris,monpanier),
                 FlowLayout.encloseBottom(arrow)
         ));
         
@@ -137,17 +137,17 @@ Toolbar tb = new Toolbar(true);
         });
          bindButtonSelection1(previous, res,mesliste, arrow);
         bindButtonSelection2(previous, res, mesfavoris, arrow);
-        bindButtonSelection3(previous, res, newo, arrow);
+        bindButtonSelection3(previous, res,monpanier, arrow);
         // special case for rotation
         addOrientationListener(e -> {
             updateArrowPosition(barGroup.getRadioButton(barGroup.getSelectedIndex()), arrow);
         });
         FavorisOService ME = new FavorisOService();
-        for (Oeuvre eee : ME.getListFOeuvres()) {
+        for (Oeuvre eee : ME.getListFOeuvres(1)) {
            
                 
                enc = EncodedImage.createFromImage(Image.createImage(this.getWidth()/3, this.getWidth()/3),false);  
-                 img = URLImage.createToStorage(enc, urlimg+eee.getImg(), urlimg+eee.getImg(),URLImage.RESIZE_SCALE);
+                 img = URLImage.createToStorage(enc, eee.getImg(), urlimg+eee.getImg(),URLImage.RESIZE_SCALE);
             if (eee.getQuantite()==0){
 //            iv.setImage(img.scaled(400, 400));
                 addButton(previous, res , eee, img, eee.getNom(),false, eee.getPrix(),"hors stock",eee.getDescription());
@@ -221,7 +221,7 @@ private void addTab(Tabs swipe, Image img, Label spacer, String text) {
 //           likes.setIcon(heartImage);
 //       }
        Label comments = new Label(quantité , "Label");
-//       FontImage.setMaterialIcon(likes, FontImage.MATERIAL_CHAT);
+       
        
        
        cnt.add(BorderLayout.CENTER, 

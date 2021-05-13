@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 //import java.util.logging.Level;
 //import java.util.logging.Logger;
 import utils.Statics;
@@ -25,7 +26,8 @@ import utils.Statics;
  * @author pc
  */
 public class FavorisOService {
-    
+      public boolean resultOK;
+      int nb;
       public ArrayList<Oeuvre> oeuvres;
     public static FavorisOService instance=null;
        public static FavorisOService getInstance() {
@@ -65,9 +67,11 @@ public class FavorisOService {
         }
         return oeuvres;
     }
-    public ArrayList<Oeuvre> getListFOeuvres(){       
+
+      
+   public ArrayList<Oeuvre> getListFOeuvres(int id){       
         ConnectionRequest con = new ConnectionRequest();
-    String url = Statics.BASE_URL+"/favoris/o/mobile/index";
+    String url = Statics.BASE_URL+"/favoris/o/mobile/index?user_id="+id;
      con.setUrl(url);
            con.addResponseListener(new ActionListener<NetworkEvent>() {
             @Override
@@ -79,4 +83,61 @@ public class FavorisOService {
  NetworkManager.getInstance().addToQueueAndWait(con);
        return oeuvres;
    }
+
+  public boolean ajoutFAv(Oeuvre ta, int id) {
+        ConnectionRequest con = new ConnectionRequest();
+       String url = Statics.BASE_URL+"/favoris/o/aa/listO/favoris/new?oeuvrage_id="+ta.getOeuvrage_id()+"&user_id="+id;
+       
+       System.out.println(url);
+         con.setUrl(url);// Insertion de l'URL de notre demande de connexion
+        con.addResponseListener(new ActionListener<NetworkEvent>() {
+            @Override
+            public void actionPerformed(NetworkEvent evt) {
+                resultOK = con.getResponseCode() == 200; 
+                con.removeResponseListener(this); 
+            }
+        });
+        NetworkManager.getInstance().addToQueueAndWait(con);
+        return resultOK;
 }
+  public boolean suppFAv(Oeuvre ta, int id) {
+        ConnectionRequest con = new ConnectionRequest();
+       String url = Statics.BASE_URL+"/favoris/o/aa/listO/favoris/delete?oeuvrage_id="+ta.getOeuvrage_id()+"&user_id="+id;
+       System.out.println(url);
+         con.setUrl(url);// Insertion de l'URL de notre demande de connexion
+        con.addResponseListener(new ActionListener<NetworkEvent>() {
+            @Override
+            public void actionPerformed(NetworkEvent evt) {
+                resultOK = con.getResponseCode() == 200; 
+                con.removeResponseListener(this); 
+            }
+        });
+        NetworkManager.getInstance().addToQueueAndWait(con);
+        return resultOK;
+}
+  
+public void isfav (Oeuvre ta, int id , Oeuvre test){
+   
+     ConnectionRequest con = new ConnectionRequest();
+       String url = Statics.BASE_URL+"/favoris/o/aa/listO/favoris?oeuvrage_id="+ta.getOeuvrage_id()+"&user_id="+id;
+       System.out.println(url);
+         con.setUrl(url);// Insertion de l'URL de notre demande de connexion
+        con.addResponseListener((et)->{
+            String jsonText =  new String(con.getResponseData());
+                    JSONParser j = new JSONParser();
+                try {
+                    
+                    Map<String,Object> obj = j.parseJSON(new CharArrayReader(jsonText.toCharArray()));
+                int nb = (int)Float.parseFloat(obj.get("favorisOId").toString());
+                    System.out.println("hhhhh"+nb);
+                    test.setOeuvrage_id(nb);
+                } catch (IOException ex) {
+                }
+        }
+        );
+        System.out.println("mllll"+nb);
+        NetworkManager.getInstance().addToQueueAndWait(con);
+        
+}
+}
+    
