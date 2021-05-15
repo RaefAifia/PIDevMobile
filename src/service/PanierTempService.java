@@ -21,7 +21,7 @@ import utils.Statics;
 
 /**
  *
- * @author Mega-PC
+ * @author TBug
  */
 public class PanierTempService {
     public ArrayList<PanierTemp> paniert;
@@ -58,11 +58,13 @@ public class PanierTempService {
                 t.setImg(leid.get("image").toString());
                 t.setDoamine(leid.get("domaine").toString());
                 o.setOeuv(t);
+                float pid = Float.parseFloat(obj.get("id").toString());
+                o.setId((int)pid);
                 float quantite = Float.parseFloat(obj.get("quantite").toString());
                 o.setQuantite((int)quantite);
              
                 paniert.add(o);
-            }
+            } 
             
         } catch (IOException ex) {   
         }
@@ -88,8 +90,43 @@ public class PanierTempService {
             NetworkManager.getInstance().addToQueueAndWait(con);
        return paniert;
    }
+   
+   
+   public void AjoutPanT(int id){
+        ConnectionRequest con = new ConnectionRequest();
+        String url = Statics.BASE_URL+"/panier/temp/newcc/"+id;
+        con.setUrl(url);
+        con.addResponseListener((e)->{
+            String str = new String(con.getResponseData());
+        });
+ 
+            NetworkManager.getInstance().addToQueueAndWait(con);    
+   }
+   
+   public void DelPant(int id){
+       ConnectionRequest con = new ConnectionRequest();
+       String url = Statics.BASE_URL+"/panier/temp/delcc/"+id;
+       con.setUrl(url);
+       con.addResponseListener(new ActionListener<NetworkEvent>() {
+            @Override
+            public void actionPerformed(NetworkEvent evt) {
+                con.removeResponseListener(this);
+            }
+       });
+       NetworkManager.getInstance().addToQueueAndWait(con);
+   }
+   
+   public void UpdPant(int id){
+       ConnectionRequest con = new ConnectionRequest();
+       String url = Statics.BASE_URL+"/panier/temp/updcc/"+id;
+       con.setUrl(url);
+       con.addResponseListener(new ActionListener<NetworkEvent>() {
+            @Override
+            public void actionPerformed(NetworkEvent evt) {
+                con.removeResponseListener(this);
+            }
+   });
+       NetworkManager.getInstance().addToQueueAndWait(con);
 
-
-
-
+   }
 }

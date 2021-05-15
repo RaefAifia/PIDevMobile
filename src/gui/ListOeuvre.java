@@ -18,10 +18,7 @@ import com.codename1.ui.Button;
 import com.codename1.ui.ButtonGroup;
 import com.codename1.ui.Command;
 import com.codename1.ui.Component;
-import static com.codename1.ui.Component.BOTTOM;
 import static com.codename1.ui.Component.CENTER;
-import static com.codename1.ui.Component.LEFT;
-import static com.codename1.ui.Component.RIGHT;
 import static com.codename1.ui.Component.TOP;
 import com.codename1.ui.Container;
 import com.codename1.ui.Dialog;
@@ -49,18 +46,14 @@ import com.codename1.ui.util.Resources;
 import entities.Oeuvre;
 import entities.PanierTemp;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
-import service.CommandeService;
 import service.OeuvrageService;
-import service.PanierService;
 import service.PanierTempService;
-
 /**
  *
- * @author TBug
+ * @author pc
  */
-public class ListPan extends Form{ 
+public class ListOeuvre extends Form{ 
     
  Form f;
 
@@ -72,9 +65,9 @@ public class ListPan extends Form{
     Label promo;
      EncodedImage enc;
      String urlimg = "http://localhost/WEBFINAL/public/PI/IMG/";
-    public ListPan(Form previous, Resources res) {  
-    super("Liste des favoris", BoxLayout.y());
-    Toolbar tb = new Toolbar(true);  
+    public ListOeuvre(Form previous, Resources res) {  
+super("Liste des favoris", BoxLayout.y());
+Toolbar tb = new Toolbar(true);  
         setToolbar(tb);
        // getTitleArea().setUIID("Container");
         //setTitle("Liste des oeuvres");
@@ -87,7 +80,7 @@ public class ListPan extends Form{
 
         Label spacer1 = new Label();
         Label spacer2 = new Label();
-       addTab(swipe, res.getImage("news-item.jpg"), spacer1, " Panier");
+       addTab(swipe, res.getImage("news-item.jpg"), spacer1, " Liste des oeuvres");
         addTab(swipe, res.getImage("dog.jpg"), spacer2, "100 Likes  ");
                 
         swipe.setUIID("Container");
@@ -133,7 +126,7 @@ public class ListPan extends Form{
         mesliste.setUIID("SelectBar");
         RadioButton mesfavoris = RadioButton.createToggle(" mes favoris ", barGroup);
          mesfavoris.setUIID("SelectBar");
-        RadioButton monpanier = RadioButton.createToggle("panier", barGroup);
+        RadioButton monpanier = RadioButton.createToggle("voir panier", barGroup);
         monpanier.setUIID("SelectBar");
        
        Label arrow = new Label(res.getImage("news-tab-down-arrow.png"), "Container");
@@ -152,7 +145,7 @@ public class ListPan extends Form{
         arrow.setVisible(false);
         addShowListener(e -> {
        arrow.setVisible(true);
-        updateArrowPosition(monpanier, arrow);
+        updateArrowPosition(mesliste, arrow);
         });
         bindButtonSelection1(previous, res,mesliste, arrow);
         bindButtonSelection2(previous, res, mesfavoris, arrow);
@@ -161,56 +154,24 @@ public class ListPan extends Form{
 //        addOrientationListener(e -> {
 //          updateArrowPosition(barGroup.getRadioButton(barGroup.getSelectedIndex()), arrow);
 //        });
-        
-        PanierTempService ME = new PanierTempService();
-        
-        for (PanierTemp eee : ME.getListPant() ) {
-            Oeuvre ee = new Oeuvre();
-                enc = EncodedImage.createFromImage(Image.createImage(this.getWidth()/3, this.getWidth()/3),false);  
-                      img = URLImage.createToStorage(enc, eee.getOeuv().getImg(), urlimg+eee.getOeuv().getImg());
+        OeuvrageService ME = new OeuvrageService();
+        for (Oeuvre eee : ME.getListOeuvres()) {
                     
+                
+               enc = EncodedImage.createFromImage(Image.createImage(this.getWidth()/3, this.getWidth()/3),false);  
+                      img = URLImage.createToStorage(enc, eee.getImg(), urlimg+eee.getImg());
+                    if (eee.getQuantite()==0){
 //            iv.setImage(img.scaled(400, 400));
-                addButton(previous, res , ee , eee ,img, eee.getOeuv().getNom(),false, eee.getOeuv().getPrix(),String.valueOf((int)eee.getQuantite())+ " Oeuvres",eee.getOeuv().getDescription());
-            
+                addButton(previous, res , eee, img, eee.getNom(),false, eee.getPrix(),"hors stock",eee.getDescription());
+            }
+            else {
+                  addButton(previous, res , eee ,img, eee.getNom(),false, eee.getPrix(),String.valueOf((int)eee.getQuantite())+ " Oeuvres",eee.getDescription());
+            }
       
       //  addButton(res.getImage("news-item-2.jpg"), "Fusce ornare cursus masspretium tortor integer placera.", true, 15, 21);
         //addButton(res.getImage("news-item-3.jpg"), "Maecenas eu risus blanscelerisque massa non amcorpe.", false, 36, 15);
        // addButton(res.getImage("news-item-4.jpg"), "Pellentesque non lorem diam. Proin at ex sollicia.", false, 11, 9);
-    }
-        
-        Button ValidPan = new Button("Valider");
-        Container content = BoxLayout.encloseY(
-                ValidPan     
-        );
-        content.setScrollableY(false);
-        add(content);
-        
-            ValidPan.addActionListener(e -> {
-            
-            try{
-                
-             InfiniteProgress ip = new InfiniteProgress();
-             final Dialog iDialog = ip.showInfiniteBlocking();
-             
-             
-             CommandeService.getInstance().AjoutCmd();
-             
-
-             PanierService.getInstance().AjoutPan();
-             
- 
-             iDialog.dispose();
-             Dialog.show("Succès","Commande Validé!",new Command("OK"));
-             new ListPan(previous, res).show();
-             refreshTheme();
-            }catch(Exception ex){
-             ex.printStackTrace();
-         }   
-            });
-    
-    
-    
-    }
+    }  }
   
     
     private void updateArrowPosition(Button b, Label arrow) {
@@ -250,8 +211,7 @@ private void addTab(Tabs swipe, Image img, Label spacer, String text) {
         swipe.addTab("", page1);
     }
     
-private void addButton(Form previous, Resources res ,Oeuvre o,PanierTemp s,URLImage img, String nom , boolean liked, float prix,String quantite, String description) {
- 
+ private void addButton(Form previous, Resources res ,Oeuvre o ,URLImage img, String nom , boolean liked, float prix,String quantité, String description) {
        int height = Display.getInstance().convertToPixels(20f);
        int width = Display.getInstance().convertToPixels(14f);
        Button image = new Button(img.fill(width, height));
@@ -272,10 +232,10 @@ private void addButton(Form previous, Resources res ,Oeuvre o,PanierTemp s,URLIm
 //           FontImage heartImage = FontImage.createMaterial(FontImage.MATERIAL_FAVORITE, s);
 //           likes.setIcon(heartImage);
 //       }
-       Label comments = new Label(quantite , "Label");
+       Label comments = new Label(quantité , "Label");
 //       FontImage.setMaterialIcon(likes, FontImage.MATERIAL_CHAT);
-        Button btnListTasks = new Button("Supprimer");
-        
+        Button btnListTasks = new Button("Ajouter au panier");
+       
        cnt.add(BorderLayout.CENTER, 
                BoxLayout.encloseY(
                        ta,
@@ -284,28 +244,65 @@ private void addButton(Form previous, Resources res ,Oeuvre o,PanierTemp s,URLIm
                ));
      Container cnt1 = new Container(BoxLayout.x()); 
        cnt1.add(cnt);
+       if(o.getQuantite()>0){
        cnt1.add(btnListTasks);
+       }
        add(cnt1);
-    
-       
-               
+       image.addActionListener( e -> 
+               new DetailOeuvre(previous, res, o).show()
+       );
        
 //       raef
-//       btnListTasks.addActionListener
-    
-            btnListTasks.addActionListener( e -> {
-    
-         try{ 
+        
+      btnListTasks.addActionListener( e -> {
+          
+         
+          int i;
+          boolean exists=false;
+          List<PanierTemp> lpt = PanierTempService.getInstance().getListPant();
+            PanierTemp pt = new PanierTemp();
+             for(i=0;i<lpt.size();i++){
+                 
+                 if(lpt.get(i).getOeuv().equals(o)){
+                     
+                     exists = true;
+                     lpt.get(i);
+                     break;
+                     }
+                };
+                try{
+             if(!exists){
+                 
              InfiniteProgress ip = new InfiniteProgress();
              final Dialog iDialog = ip.showInfiniteBlocking();
              
-             
-             PanierTempService.getInstance().DelPant(s.getId());
+             PanierTempService.getInstance().AjoutPanT(o.getOeuvrage_id());
              
              iDialog.dispose();
-             Dialog.show("Supprimé","Oeuvre supprimé avec succès!",new Command("OK"));
+             Dialog.show("Succès","Oeuvre ajouté au panier!",new Command("OK"));
              new ListPan(previous, res).show();
              refreshTheme();
+                
+                 }else if(lpt.get(i).getQuantite() >= o.getQuantite()){
+
+                       InfiniteProgress ip = new InfiniteProgress();
+                         final Dialog iDialog = ip.showInfiniteBlocking();
+                         iDialog.dispose();
+                         Dialog.show("Echec","Stock Insuffisant",new Command("OK"));
+                         new ListPan(previous, res).show();
+                         refreshTheme();
+                     }else{
+
+                 InfiniteProgress ip = new InfiniteProgress();
+                 final Dialog iDialog = ip.showInfiniteBlocking();
+                 
+                 PanierTempService.getInstance().UpdPant(lpt.get(i).getId());
+                 
+                 iDialog.dispose();
+                 Dialog.show("Exist","Oeuvre existe deja! Quantité incrémenté!",new Command("OK"));
+                 new ListPan(previous, res).show();
+                 refreshTheme();
+             }
          }catch(Exception ex){
              ex.printStackTrace();
          }  
@@ -335,7 +332,6 @@ private void addButton(Form previous, Resources res ,Oeuvre o,PanierTemp s,URLIm
             if(b.isSelected()) {
                 updateArrowPosition(b, arrow);
                 new ListPan(previous, res).show();
-                
             }
         });
     }
