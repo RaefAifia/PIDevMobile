@@ -328,6 +328,9 @@
         <val key="WhiteSeparator.margin" value="0,0,0,0" />
         <val key="WhiteSeparator.padding" value="1,1,1,1" />
         <val key="WhiteSeparator.transparency" value="26" />
+        <val key="labelMIMI.fgColor" value="000000" />
+        <font key="labelMIMI.font" type="system" face="0" style="0" size="0" />
+        <val key="labelMIMI.transparency" value="0" />
         <val key="transparency" value="0" />
     </theme>
     <image name="timeline-background.jpg"  />

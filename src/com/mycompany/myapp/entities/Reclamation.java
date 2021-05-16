@@ -13,13 +13,16 @@ import java.util.Date;
  */
 public class Reclamation {
     private int user_id; 
-    private String reclamation_nom;
+    private String reclamation_nom,x;
     private int evenement_id,id;
     private int formation_id;
     private int oeuvrage_id;
     private String description, sujet;
     private int reclamation_id;
     private Date date;
+    public Reclamation(){
+        
+    }
     public Reclamation(int reclamation_id,String reclamation_nom,int user_id, int evenement_id ,int formation_id,int oeuvrage_id,String sujet, String description, Date date){
         this.reclamation_id=reclamation_id;
         this.reclamation_nom=reclamation_nom;
@@ -203,6 +206,20 @@ public class Reclamation {
      */
     public void setSujet(String sujet) {
         this.sujet = sujet;
+    }
+
+    /**
+     * @return the x
+     */
+    public String getX() {
+        return x;
+    }
+
+    /**
+     * @param x the x to set
+     */
+    public void setX(String x) {
+        this.x = x;
     }
     
 }

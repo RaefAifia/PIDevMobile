@@ -38,7 +38,7 @@ public ArrayList<User> Users;
     public boolean resultOK;
     private ConnectionRequest req;
 
-    private UserService() {
+    public UserService() {
          req = new ConnectionRequest();
     }
 
@@ -49,48 +49,93 @@ public ArrayList<User> Users;
         return instance;
     }
 
-    public boolean addUser(User u) {
-        String url = Statics.BASE_URL + "/user/addUser?username=" + u.getUsername()+"&password="+u.getPassword()+"&nom="+u.getNom()
-                +"&prenom="+u.getPrenom()+"&email="+u.getEmail()+"&adresse="+u.getAdresse()+"&numTel="+u.getNum_tel()+"&bio="+u.getBio(); //création de l'URL
+    public User addUser(User v) {
+        User u = new User();
+        String url = Statics.BASE_URL + "/user/addUser?username=" + v.getUsername()+"&password="+v.getPassword()+"&nom="+v.getNom()
+                +"&prenom="+v.getPrenom()+"&email="+v.getEmail()+"&adresse="+v.getAdresse()+"&numTel="+v.getNum_tel()+"&bio="+v.getBio(); //création de l'URL
         req.setUrl(url);// Insertion de l'URL de notre demande de connexion
-        req.addResponseListener(new ActionListener<NetworkEvent>() {
-            @Override
-            public void actionPerformed(NetworkEvent evt) {
-                resultOK = req.getResponseCode() == 200; //Code HTTP 200 OK
-                req.removeResponseListener(this); //Supprimer cet actionListener
-                /* une fois que nous avons terminé de l'utiliser.
-                La ConnectionRequest req est unique pour tous les appels de 
-                n'importe quelle méthode du Service User, donc si on ne supprime
-                pas l'ActionListener il sera enregistré et donc éxécuté même si 
-                la réponse reçue correspond à une autre URL(get par exemple)*/
-                
-            }
-        });
-        NetworkManager.getInstance().addToQueueAndWait(req);
-        return resultOK;
-    }
-    
-    public boolean login(User u) {
-        String url = Statics.BASE_URL + "/user/login?email="+ u.getEmail()+"&password="+u.getPassword();
-        req.setUrl(url);// Insertion de l'URL de notre demande de connexion
-        req.addResponseListener((evt) -> {
-         {
-            JSONParser jsonp= new JSONParser();
+         req.addResponseListener((evt) -> {
+        {
+           JSONParser jsonp= new JSONParser();
          
             try {
                 Map<String,Object> Use = jsonp.parseJSON(new CharArrayReader(new String(req.getResponseData()).toCharArray()));
-                float id = Float.parseFloat(Use.get("userId").toString());
-                u.setUser_id((int)id);
-                System.out.println((int)id);
+               
+                float id1 = Float.parseFloat(Use.get("userId").toString());
+                u.setUser_id((int)id1);                
+                u.setAdresse(Use.get("adresse").toString());
+                u.setNom(Use.get("nom").toString());
+                u.setPrenom(Use.get("prenom").toString());
+                u.setUsername(Use.get("username").toString());
+                u.setEmail(Use.get("email").toString());
+                u.setPassword(Use.get("password").toString());
+                u.setBio(Use.get("bio").toString());
+                u.setImage(Use.get("image").toString());
+                String x=(String) Use.get("mailconfirme");
+                if(x.equals("false")){
+                u.setMailconfirme(0);
+                }else{ u.setMailconfirme(1);}
+                String y=(String) Use.get("numconfirme");
+                if(y.equals("false")){
+                u.setNumconfirme(0);
+                }else{ u.setNumconfirme(1);}
+                
+               
             } catch (IOException ex) {
                 //Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
             }
+
+            //System.out.println("data===" + str);
+        }
+      
+      });
+        NetworkManager.getInstance().addToQueueAndWait(req);
+        return u;
+}
+    
+    public User login(User z) {
+        User u = new User();
+        String url = Statics.BASE_URL + "/user/login?email="+ z.getEmail()+"&password="+z.getPassword();
+        System.out.println(url);
+        req.setUrl(url);
+        req.setPost(false);
+        req.addResponseListener((evt) -> {
+        {
+           JSONParser jsonp= new JSONParser();
+         
+            try {
+                Map<String,Object> Use = jsonp.parseJSON(new CharArrayReader(new String(req.getResponseData()).toCharArray()));
+               
+                float id1 = Float.parseFloat(Use.get("userId").toString());
+                u.setUser_id((int)id1);                
+                u.setAdresse(Use.get("adresse").toString());
+                u.setNom(Use.get("nom").toString());
+                u.setPrenom(Use.get("prenom").toString());
+                u.setUsername(Use.get("username").toString());
+                u.setEmail(Use.get("email").toString());
+                u.setPassword(Use.get("password").toString());
+                //u.setBio(Use.get("bio").toString());
+                u.setImage(Use.get("image").toString());
+                String x=(String) Use.get("mailconfirme");
+                if(x.equals("false")){
+                u.setMailconfirme(0);
+                }else{ u.setMailconfirme(1);}
+                String y=(String) Use.get("numconfirme");
+                if(y.equals("false")){
+                u.setNumconfirme(0);
+                }else{ u.setNumconfirme(1);}
+               
+           
+            } catch (IOException ex) {
+                //Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
             }
+
+            //System.out.println("data===" + str);
+        }
         });
         NetworkManager.getInstance().addToQueueAndWait(req);
-        return resultOK;
+        return u;
     }
-
     public ArrayList<User> parseUsers(String jsonText){
         try {
             Users=new ArrayList<>();
@@ -107,7 +152,8 @@ public ArrayList<User> Users;
                 User t = new User();
                 float id = Float.parseFloat(obj.get("userId").toString());
                 t.setUser_id((int)id);
-                t.setUsername(UsersListJson.get("username").toString());
+                t.setUsername(obj.get("username").toString());
+                t.setImage(obj.get("image").toString());
                
               
                 Users.add(t);
@@ -159,7 +205,7 @@ public ArrayList<User> Users;
                 u.setUsername(Use.get("username").toString());
                 u.setEmail(Use.get("email").toString());
                 u.setPassword(Use.get("password").toString());
-                u.setBio(Use.get("bio").toString());
+//                u.setBio(Use.get("bio").toString());
                 u.setImage(Use.get("image").toString());
                 String x=(String) Use.get("mailconfirme");
                 if(x.equals("false")){

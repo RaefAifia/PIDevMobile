@@ -71,41 +71,38 @@ public class login  extends Form{
         
          Image img = res.getImage("signin-image.jpg");
 //        if(img.getHeight() > Display.getInstance().getDisplayHeight() ) {
-//            img = img.scaledHeight(Display.getInstance().getDisplayHeight() );
+     //   img = img.scaledHeight(Display.getInstance().getDisplayHeight() );
 //        }
+//img.scaled(1700, 1700);
         ScaleImageLabel sl = new ScaleImageLabel(img);
         //sl.setUIID("BottomPad");
         //sl.setBackgroundType(Style.BACKGROUND_IMAGE_SCALED_FILL);
-        
+        ImageViewer img1 = new ImageViewer();
+        img1.setImage(img.scaled(img.getWidth(), img.getHeight()));
+       //sl.setHeight(img.getHeight()*5);
        
 
 
         TextField email = new TextField("", "Email", 20, TextField.ANY);
+        email.setUIID("labelMIMI");
         TextField password = new TextField("", "Password", 20, TextField.PASSWORD);
+        password.setUIID("labelMIMI");
         email.setSingleLineTextArea(false);
         password.setSingleLineTextArea(false);
         Button signIn = new Button("Connexion");
         Button signUp = new Button("Créer compte");
         //signUp.addActionListener(e -> new SignUp(res).show());
         signUp.addActionListener((evt) -> {
-             try {
-            x = EmailSend.SendMail("aa");
-        } catch (MessagingException ex) {
-            
-        }   catch (UnsupportedEncodingException ex) { 
-                 System.out.println("jhg");
-            } 
+            new SignUp(res).show();
         });
        Label ui = new Label();
         //signUp.setUIID("Link");
         Label doneHaveAnAccount = new Label("vous n'avez pas de compte?");
-        
+        add(BorderLayout.CENTER,img1);
         Container content = BoxLayout.encloseY(
-               sl,
-                new Label("  "),
-                new Label("  "),
-                new Label("  "),
-                new Label("  "),
+               
+              
+              
                 new FloatingHint(email),
                 
                 new FloatingHint(password),
@@ -128,14 +125,14 @@ public class login  extends Form{
                 final Dialog iDialog = ip.showInfiniteBlocking();
                 String image ="";
                 User u = new User( email.getText(),password.getText());
-                UserService.getInstance().login(u);
-                if(u.getUser_id()==0){
+                User x = UserService.getInstance().login(u);
+                if(x.getUser_id()==0){
                   Dialog.show("email ou mot de passe incorrecte","","annuler", "ok");
                 }else{
-                    System.out.println("id "+ u.getUser_id());
-                    UserService.getInstance().DetailUser(u.getUser_id());
-                    UserService.setCurrentUser(u);
-                    new Profil(res).show();
+                    System.out.println("id "+ x.getUser_id());
+                    //UserService.getInstance().DetailUser(u.getUser_id());
+                    UserService.setCurrentUser(x);
+                    new Profil(x,res).show();
                 }
                 
                 

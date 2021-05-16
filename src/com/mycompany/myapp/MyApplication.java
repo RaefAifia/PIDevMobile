@@ -13,9 +13,12 @@ import com.codename1.ui.Toolbar;
 import java.io.IOException;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.io.NetworkEvent;
+import com.mycompany.myapp.gui.BaseForm;
 import com.mycompany.myapp.gui.SignUp;
 import com.mycompany.myapp.gui.HomeForm;
-import com.mycompany.myapp.gui.Profil;
+import com.mycompany.myapp.gui.Nosartistes;
+import com.mycompany.myapp.gui.Reclamations;
+
 import com.mycompany.myapp.gui.login;
 
 /**
@@ -51,7 +54,8 @@ public class MyApplication {
     }
     
     public void start() {
-         new login(theme).show();
+       Form f = new Form();
+         new Reclamations(f, theme).show();
        
     }
 

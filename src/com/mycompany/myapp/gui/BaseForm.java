@@ -94,7 +94,9 @@ public class BaseForm extends Form {
         ));
         
        // tb.addMaterialCommandToSideMenu("Newsfeed", FontImage.MATERIAL_UPDATE, e -> new NewsfeedForm(res).show());
-        tb.addMaterialCommandToSideMenu("Profile", FontImage.MATERIAL_SETTINGS, e -> new Profil(res).show());
+        tb.addMaterialCommandToSideMenu("Profile", FontImage.MATERIAL_SETTINGS, e -> new Profil(UserService.getCurrentUser(),res).show());
+         Form f =  new Form() ;
+         tb.addMaterialCommandToSideMenu("Nos artistes", FontImage.MATERIAL_SETTINGS, e -> new Nosartistes(f , res).show());
        tb.addMaterialCommandToSideMenu("Logout", FontImage.MATERIAL_EXIT_TO_APP, e -> new WalkthruForm(res).show());
     }
 }

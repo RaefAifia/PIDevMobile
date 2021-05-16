@@ -16,13 +16,13 @@ import com.mycompany.myapp.services.UserService;
  * @author asus
  */
 public class List extends Form {
-    public List(Form previous) {
+    public List() {
         setTitle("List tasks");
         
         SpanLabel sp = new SpanLabel();
         sp.setText(UserService.getInstance().getAllUsers().toString());
         add(sp);
-        getToolbar().addMaterialCommandToLeftBar("", FontImage.MATERIAL_ARROW_BACK, e-> previous.showBack());
+        //getToolbar().addMaterialCommandToLeftBar("", FontImage.MATERIAL_ARROW_BACK, e-> previous.showBack());
     }
     
 }

@@ -33,7 +33,7 @@ import com.mycompany.myapp.services.UserService;
  */
 public class Profil extends BaseForm {
 
-    public Profil(Resources res) {
+    public Profil(User u , Resources res) {
         super("Newsfeed", BoxLayout.y());
         Toolbar tb = new Toolbar(true);
         setToolbar(tb);
@@ -44,7 +44,7 @@ public class Profil extends BaseForm {
         super.addSideMenu(res);
         
         tb.addSearchCommand(e -> {});
-         User u =UserService.getInstance().DetailUser(UserService.getCurrentUser().getUser_id());
+         //User u =UserService.getInstance().DetailUser(UserService.getCurrentUser().getUser_id());
          
         ImageViewer img1 = new ImageViewer();
         EncodedImage placeholder = EncodedImage.createFromImage(Image.createImage(this.getWidth()/3, this.getWidth()/3),false);
@@ -94,18 +94,24 @@ public class Profil extends BaseForm {
         
         Label adresse = new Label(u.getAdresse(), res.getImage(""), "BottomPad" );
         adresse.setUIID("TextFieldBlack");
-        addStringValue("Adresse", adresse);
+        if(u.getUser_id()!=UserService.getCurrentUser().getUser_id()){
+            
+            adresse.setHidden(true);}else{
+        addStringValue("Adresse", adresse);}
         
         Label numTel = new Label(String.valueOf(u.getNum_tel()), res.getImage(""), "BottomPad" );
         numTel.setUIID("TextFieldBlack");
-        addStringValue("Numeroe", numTel);
+        if(u.getUser_id()!=UserService.getCurrentUser().getUser_id()){
+            
+            numTel.setHidden(true);}else{
+        addStringValue("Numeroe", numTel);}
         
-        Label bio = new Label(String.valueOf(u.getNum_tel()), res.getImage(""), "BottomPad" );
-        bio.setUIID("TextFieldBlack");
-        addStringValue("Bio", bio);
+//        Label bio = new Label(String.valueOf(u.getNum_tel()), res.getImage(""), "BottomPad" );
+//        bio.setUIID("TextFieldBlack");
+//        addStringValue("Bio", bio);
         Button btnconfirm = new Button("Confirmer email");
         System.out.println(u.getMailconfirme());
-        if(u.getMailconfirme()==0){
+        if((u.getMailconfirme()==0)&&(u.getUser_id()==UserService.getCurrentUser().getUser_id())){
             btnconfirm.setHidden(false);
         addStringValue("", btnconfirm);
             btnconfirm.addActionListener((evt) -> {
@@ -117,7 +123,7 @@ public class Profil extends BaseForm {
         }
         Button btnconfirmn = new Button("Confirmer numéro");
         //System.out.println(u.getMailconfirme());
-        if(u.getNumconfirme()==0){
+        if((u.getNumconfirme()==0) &&(u.getUser_id()==UserService.getCurrentUser().getUser_id())){
             btnconfirmn.setHidden(false);
         addStringValue("", btnconfirmn);
             btnconfirmn.addActionListener((evt) -> {
@@ -127,7 +133,11 @@ public class Profil extends BaseForm {
             btnconfirmn.setHidden(true);
             
         }
-        
+        if(u.getUser_id()!=UserService.getCurrentUser().getUser_id()){
+            
+            numTel.setHidden(true);
+            adresse.setHidden(true);
+        }
     }
     
     private void addStringValue(String s, Component v) {

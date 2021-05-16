@@ -100,7 +100,7 @@ public class EmailConfirm  extends BaseForm{
                     
                    User u =UserService.getInstance().confirmMail(UserService.getCurrentUser().getUser_id());
                     UserService.setCurrentUser(u);
-                    new Profil(res).show();
+                    new Profil(u,res).show();
                 }
                 
                 

@@ -95,7 +95,7 @@ public class NumConfirm  extends BaseForm{
                     
                    User u =UserService.getInstance().confirmNum(UserService.getCurrentUser().getUser_id());
                     UserService.setCurrentUser(u);
-                    new Profil(res).show();
+                    new Profil(u,res).show();
                 }
                 
                 
