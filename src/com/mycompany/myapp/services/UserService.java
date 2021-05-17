@@ -240,7 +240,8 @@ public ArrayList<User> Users;
                 Map<String,Object> Use = jsonp.parseJSON(new CharArrayReader(new String(req.getResponseData()).toCharArray()));
                
                 float id1 = Float.parseFloat(Use.get("userId").toString());
-                u.setUser_id((int)id1);                u.setAdresse(Use.get("adresse").toString());
+                u.setUser_id((int)id1);                
+                u.setAdresse(Use.get("adresse").toString());
                 u.setNom(Use.get("nom").toString());
                 u.setPrenom(Use.get("prenom").toString());
                 u.setUsername(Use.get("username").toString());
@@ -267,44 +268,5 @@ public ArrayList<User> Users;
         NetworkManager.getInstance().addToQueueAndWait(req);
         return u;
     }
-    public User confirmNum(int id){
-         User u = new User();
-        String url = Statics.BASE_URL+"/user/confirmNum/"+id;
-        req.setUrl(url);
-        req.setPost(false);
-        req.addResponseListener((evt) -> {
-        {
-           JSONParser jsonp= new JSONParser();
-         
-            try {
-                Map<String,Object> Use = jsonp.parseJSON(new CharArrayReader(new String(req.getResponseData()).toCharArray()));
-               
-                float id1 = Float.parseFloat(Use.get("userId").toString());
-                u.setUser_id((int)id1);                u.setAdresse(Use.get("adresse").toString());
-                u.setNom(Use.get("nom").toString());
-                u.setPrenom(Use.get("prenom").toString());
-                u.setUsername(Use.get("username").toString());
-                u.setEmail(Use.get("email").toString());
-                u.setPassword(Use.get("password").toString());
-                u.setBio(Use.get("bio").toString());
-                u.setImage(Use.get("image").toString());
-                String x=(String) Use.get("mailconfirme");
-                if(x.equals("false")){
-                u.setMailconfirme(0);
-                }else{ u.setMailconfirme(1);}
-                String y=(String) Use.get("numconfirme");
-                if(y.equals("false")){
-                u.setNumconfirme(0);
-                }else{ u.setNumconfirme(1);}
-               
-            } catch (IOException ex) {
-                //Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-            //System.out.println("data===" + str);
-        }
-        });
-        NetworkManager.getInstance().addToQueueAndWait(req);
-        return u;
-    }
+    
 }

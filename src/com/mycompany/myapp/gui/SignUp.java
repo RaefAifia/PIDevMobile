@@ -1,9 +1,11 @@
 package com.mycompany.myapp.gui;
 
+import com.codename1.capture.Capture;
 import com.codename1.components.FloatingHint;
 import com.codename1.components.ImageViewer;
 import com.codename1.components.InfiniteProgress;
 import com.codename1.components.ScaleImageLabel;
+import com.codename1.io.File;
 import com.codename1.ui.Button;
 import com.codename1.ui.Container;
 import com.codename1.ui.Dialog;
@@ -23,6 +25,7 @@ import com.mycompany.myapp.gui.Profil;
 import com.mycompany.myapp.services.UserService;
 
 import com.sun.scenario.animation.shared.InfiniteClipEnvelope;
+import java.io.IOException;
 
 /**
  * Signup UI
@@ -31,7 +34,7 @@ import com.sun.scenario.animation.shared.InfiniteClipEnvelope;
  */
 public class SignUp extends BaseForm {
 
-    public SignUp(Resources res) {
+    public SignUp(Resources res) throws IOException {
         super("", BoxLayout.y());        
 //super(new BoxLayout(TOP));
         Toolbar tb = new Toolbar(true);
@@ -58,7 +61,7 @@ public class SignUp extends BaseForm {
         TextField numTel = new TextField("", "numéro", 20, TextField.NUMERIC);
 
         TextField bio = new TextField("", "Bio", 20, TextField.ANY);
-
+    
 
         username.setSingleLineTextArea(false);
         email.setSingleLineTextArea(false);
@@ -102,6 +105,7 @@ public class SignUp extends BaseForm {
                 createLineSeparator()
                 ,next
                 ,FlowLayout.encloseCenter(alreadHaveAnAccount, signIn)
+                
         );
         //content.setScrollableY(true);
         addAll(img1,content );

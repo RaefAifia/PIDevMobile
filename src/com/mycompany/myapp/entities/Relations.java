@@ -10,12 +10,15 @@ package com.mycompany.myapp.entities;
  * @author asus
  */
 public class Relations {
-    private int follower_id, followee_id;
+    private int relation_id, follower_id, followee_id;
     
     
     public Relations(int follower_id, int followee_id){
         this.followee_id=followee_id;
         this.follower_id=follower_id;
+    }
+
+    public Relations() {
     }
 
     
@@ -36,6 +39,20 @@ public class Relations {
     
     public void setFollowee_id(int followee_id) {
         this.followee_id = followee_id;
+    }
+
+    /**
+     * @return the relation_id
+     */
+    public int getRelation_id() {
+        return relation_id;
+    }
+
+    /**
+     * @param relation_id the relation_id to set
+     */
+    public void setRelation_id(int relation_id) {
+        this.relation_id = relation_id;
     }
     
 }

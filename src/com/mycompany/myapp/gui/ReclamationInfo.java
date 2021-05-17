@@ -28,6 +28,7 @@ import com.codename1.ui.plaf.Style;
 import com.codename1.ui.util.Resources;
 import com.mycompany.myapp.entities.Reclamation;
 import com.mycompany.myapp.entities.User;
+import com.mycompany.myapp.services.ReclamationService;
 import com.mycompany.myapp.services.UserService;
 import java.util.Date;
 
@@ -37,7 +38,8 @@ import java.util.Date;
  */
 public class ReclamationInfo extends BaseForm {
 
-    public ReclamationInfo(Reclamation u , Resources res) {
+    public ReclamationInfo(Reclamation v , Resources res) {
+
         super("Newsfeed", BoxLayout.y());
         Toolbar tb = new Toolbar(true);
         setToolbar(tb);
@@ -45,12 +47,12 @@ public class ReclamationInfo extends BaseForm {
         setTitle("Profile");
         getContentPane().setScrollVisible(false);
         
-//        super.addSideMenu(res);
+        super.addSideMenu(res);
         
         tb.addSearchCommand(e -> {});
          //User u =UserService.getInstance().DetailUser(UserService.getCurrentUser().getUser_id());
          
-         Image img1 = res.getImage("profile-background.jpg");
+         Image img1 = res.getImage("11.jpg");
         if(img1.getHeight() > Display.getInstance().getDisplayHeight() / 3) {
             img1 = img1.scaledHeight(Display.getInstance().getDisplayHeight() / 3);
         }
@@ -68,6 +70,7 @@ public class ReclamationInfo extends BaseForm {
                 
         ));
        
+        Reclamation u = ReclamationService.getInstance().DetailRec(v.getReclamation_id());
 
        
         Label nom = new Label(u.getReclamation_nom(), res.getImage(""), "BottomPad" );
@@ -78,18 +81,20 @@ public class ReclamationInfo extends BaseForm {
         description.setUIID("TextFieldBlack");
         addStringValue("Description", description);
         
-        Label sujet = new Label(u.getSujet(), res.getImage(""), "BottomPad" );
-        sujet.setUIID("TextFieldBlack");
-        addStringValue("Sujet", sujet);
-        
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        String date = formatter.format(u.getDate());
-        Label datee = new Label(date, res.getImage(""), "BottomPad" );
-        datee.setUIID("TextFieldBlack");
-        addStringValue("Date", datee);
-        String conc="";
         Label concernant = new Label(u.getX(), res.getImage(""), "BottomPad" );
         concernant.setUIID("TextFieldBlack");
+        addStringValue("X", concernant);
+        
+        Label sujet = new Label(u.getSujet(), res.getImage(""), "BottomPad" );
+        sujet.setUIID("TextFieldBlack");
+        addStringValue("concernant", sujet);
+        
+//        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+//        String date = formatter.format(u.getDate());
+//        Label datee = new Label(date, res.getImage(""), "BottomPad" );
+//        datee.setUIID("TextFieldBlack");
+//        addStringValue("Date", datee);
+        //String conc="";
         
         
 //        Label bio = new Label(String.valueOf(u.getNum_tel()), res.getImage(""), "BottomPad" );

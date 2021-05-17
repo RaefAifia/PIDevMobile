@@ -70,15 +70,15 @@ public class Nosartistes extends BaseForm {
      EncodedImage enc;
      String urlimg = "http://localhost/pi_symfony/public/images/profil/";
     public Nosartistes(Form previous, Resources res) {  
-super("Newsfeed", BoxLayout.y());
-Toolbar tb = new Toolbar(true);
-        setToolbar(tb);
-        getTitleArea().setUIID("Container");
-        super.addSideMenu(res);
+    super("Newsfeed", BoxLayout.y());
+    Toolbar tb = new Toolbar(true);
+    setToolbar(tb);
+    getTitleArea().setUIID("Container");
+    super.addSideMenu(res);
 
         
     // super.addSideMenu(res);
-      Image img1 = res.getImage("profile-background.jpg");
+      Image img1 = res.getImage("10.jpg");
         if(img1.getHeight() > Display.getInstance().getDisplayHeight() / 3) {
             img1 = img1.scaledHeight(Display.getInstance().getDisplayHeight() / 3);
         }

@@ -73,7 +73,7 @@ public class BaseForm extends Form {
 
     protected void addSideMenu(Resources res) {
         Toolbar tb = getToolbar();
-        Image img = res.getImage("profile-background.jpg");
+        Image img = res.getImage("3.jpg");
          User u =UserService.getInstance().DetailUser(UserService.getCurrentUser().getUser_id());
          
          ImageViewer img1 = new ImageViewer();
@@ -95,8 +95,9 @@ public class BaseForm extends Form {
         
        // tb.addMaterialCommandToSideMenu("Newsfeed", FontImage.MATERIAL_UPDATE, e -> new NewsfeedForm(res).show());
         tb.addMaterialCommandToSideMenu("Profile", FontImage.MATERIAL_SETTINGS, e -> new Profil(UserService.getCurrentUser(),res).show());
-         Form f =  new Form() ;
-         tb.addMaterialCommandToSideMenu("Nos artistes", FontImage.MATERIAL_SETTINGS, e -> new Nosartistes(f , res).show());
-       tb.addMaterialCommandToSideMenu("Logout", FontImage.MATERIAL_EXIT_TO_APP, e -> new WalkthruForm(res).show());
+        Form f =  new Form() ;
+        tb.addMaterialCommandToSideMenu("Nos artistes", FontImage.MATERIAL_SETTINGS, e -> new Nosartistes(f , res).show());
+        tb.addMaterialCommandToSideMenu("Logout", FontImage.MATERIAL_EXIT_TO_APP, e -> new login(res).show());
+        tb.addMaterialCommandToSideMenu("mes réclamations", FontImage.MATERIAL_EXIT_TO_APP, e -> new Reclamations(f,res).show());
     }
 }

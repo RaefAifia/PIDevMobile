@@ -45,12 +45,12 @@ public class ReclamationService {
         return instance;
     }
 
-    public Reclamation addRec(Reclamation w, String x,String y) {
+    public Reclamation addRec(String nom, String x,String y, int id , String description) {
         Reclamation v = new Reclamation();
-        String url = Statics.BASE_URL + "/reclamation/afficheAll/addrec?reclamationNom=" + v.getReclamation_nom()+"&description="+v.getDescription()+"&x="+x
-                +"&concernant="+y; //création de l'URL
+        String url = Statics.BASE_URL + "/reclamation/newRec?nom=" + nom+"&description="+description+"&x="+x
+                +"&concernant="+y+"&userId=" + id; //création de l'URL
         req.setUrl(url);// Insertion de l'URL de notre demande de connexion
-         req.addResponseListener((evt) -> {
+        req.addResponseListener((evt) -> {
         {
            JSONParser jsonp= new JSONParser();
          
@@ -60,38 +60,18 @@ public class ReclamationService {
                 float id1 = Float.parseFloat(Use.get("reclamationId").toString());
                 v.setReclamation_id((int)id1);                
                 
-                v.setReclamation_nom(Use.get("reclamationNom").toString());
-                v.setSujet(Use.get("concernant").toString());
-                float id2 = Float.parseFloat(Use.get("userId").toString());
                 
-                v.setUser_id((int) id2);
-                SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-                Date date = formatter.parse(Use.get("date").toString());
-                v.setDate(date);
-                
-                float formation_id= Float.parseFloat(Use.get("reclamationId").toString());
-
-                v.setFormation_id((int)formation_id);
-                float evenement_id= Float.parseFloat(Use.get("reclamationId").toString());
-
-                v.setEvenement_id((int)evenement_id);
-                float oeuvre_id= Float.parseFloat(Use.get("reclamationId").toString());
-
-                v.setOeuvrage_id((int)oeuvre_id);
-               
             } catch (IOException ex) {
                 //Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ParseException ex) {
-               // Logger.getLogger(ReclamationService.class.getName()).log(Level.SEVERE, null, ex);
             }
-
-            //System.out.println("data===" + str);
         }
-      
-      });
+        });
+        
         NetworkManager.getInstance().addToQueueAndWait(req);
         return v;
-}
+
+                }
+
     public ArrayList<Reclamation> parseRec(String jsonText){
         try {
             Recs =new ArrayList<>();
@@ -127,8 +107,8 @@ public class ReclamationService {
         return Recs;
     }
     
-    public ArrayList<Reclamation> getAllRecs(){
-        String url = Statics.BASE_URL+"/reclamation/afficheAll";
+    public ArrayList<Reclamation> getAllRecs(int id){
+        String url = Statics.BASE_URL+"/reclamation/afficheAll/user/"+id;
         req.setUrl(url);
         req.setPost(false);
         req.addResponseListener(new ActionListener<NetworkEvent>() {
@@ -157,11 +137,15 @@ public class ReclamationService {
                 v.setReclamation_id((int)id1);                
                 
                 v.setReclamation_nom(Use.get("reclamationNom").toString());
-                v.setSujet(Use.get("concernant").toString());
+                v.setDescription(Use.get("description").toString());
                 v.setX(Use.get("x").toString());
-                float id2 = Float.parseFloat(Use.get("userId").toString());
+                v.setSujet(Use.get("concernant").toString());
+                //v.setSujet((int)id0);
                 
-                v.setUser_id((int) id2);
+                
+//                float id2 = Float.parseFloat(Use.get("userId").toString());
+                
+              //  v.setUser_id((int) id2);
                 SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                 Date date = formatter.parse(Use.get("date").toString());
                 v.setDate(date);

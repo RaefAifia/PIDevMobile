@@ -32,7 +32,9 @@ import com.codename1.ui.util.Resources;
 import com.mycompany.myapp.entities.User;
 import com.mycompany.myapp.services.UserService;
 import com.mycompany.myapp.utils.EmailSend;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+
 
 import javafx.concurrent.Task;
 import javax.mail.MessagingException;
@@ -93,7 +95,11 @@ public class login  extends Form{
         Button signUp = new Button("Créer compte");
         //signUp.addActionListener(e -> new SignUp(res).show());
         signUp.addActionListener((evt) -> {
-            new SignUp(res).show();
+            try {
+                new SignUp(res).show();
+            } catch (IOException ex) {
+                //Logger.getLogger(login.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
        Label ui = new Label();
         //signUp.setUIID("Link");

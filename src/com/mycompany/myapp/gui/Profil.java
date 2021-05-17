@@ -12,6 +12,7 @@ import com.codename1.ui.CheckBox;
 import com.codename1.ui.Component;
 import com.codename1.ui.Display;
 import com.codename1.ui.EncodedImage;
+import com.codename1.ui.Form;
 import com.codename1.ui.Image;
 import com.codename1.ui.Label;
 import com.codename1.ui.TextField;
@@ -24,7 +25,9 @@ import com.codename1.ui.layouts.GridLayout;
 import com.codename1.ui.layouts.LayeredLayout;
 import com.codename1.ui.plaf.Style;
 import com.codename1.ui.util.Resources;
+import com.mycompany.myapp.entities.Relations;
 import com.mycompany.myapp.entities.User;
+import com.mycompany.myapp.services.RelationService;
 import com.mycompany.myapp.services.UserService;
 
 /**
@@ -41,7 +44,8 @@ public class Profil extends BaseForm {
         setTitle("Profile");
         getContentPane().setScrollVisible(false);
         
-        super.addSideMenu(res);
+             super.addSideMenu(res);
+
         
         tb.addSearchCommand(e -> {});
          //User u =UserService.getInstance().DetailUser(UserService.getCurrentUser().getUser_id());
@@ -50,7 +54,7 @@ public class Profil extends BaseForm {
         EncodedImage placeholder = EncodedImage.createFromImage(Image.createImage(this.getWidth()/3, this.getWidth()/3),false);
         URLImage urlImage = URLImage.createToStorage(placeholder, u.getImage(), "http://localhost/pi_symfony/public/images/profil/"+u.getImage());
          System.out.println(urlImage);  
-        Image img = res.getImage("profile-background.jpg");
+        Image img = res.getImage("8.jpg");
         if(img.getHeight() > Display.getInstance().getDisplayHeight() / 3) {
             img = img.scaledHeight(Display.getInstance().getDisplayHeight() / 3);
         }
@@ -121,18 +125,31 @@ public class Profil extends BaseForm {
             btnconfirm.setHidden(true);
             
         }
+        Button btnssabonner = new Button();
+        if(u.getUser_id()!=UserService.getCurrentUser().getUser_id()){
+        Relations r = RelationService.getInstance().checkR(UserService.getCurrentUser().getUser_id(), u.getUser_id());
+            System.out.println("relation id "+r.getRelation_id());    
+        if(r.getRelation_id()==0){
+           btnssabonner.setText("s abonner");
+           addStringValue("", btnssabonner);
+           btnssabonner.addActionListener((evt) -> {
+                RelationService.getInstance().addR(UserService.getCurrentUser().getUser_id(), u.getUser_id());
+                
+                new Profil(u, res).show();
+            });
+        }
+        else{
+             btnssabonner.setText("se désabonner");
+             addStringValue("", btnssabonner);
+             btnssabonner.addActionListener((evt) -> {
+                RelationService.getInstance().deleteR(UserService.getCurrentUser().getUser_id(), u.getUser_id());
+                System.out.println("user page"+ u.getUser_id());
+                new Profil(u, res).show();
+            });
+        }}
         Button btnconfirmn = new Button("Confirmer numéro");
         //System.out.println(u.getMailconfirme());
-        if((u.getNumconfirme()==0) &&(u.getUser_id()==UserService.getCurrentUser().getUser_id())){
-            btnconfirmn.setHidden(false);
-        addStringValue("", btnconfirmn);
-            btnconfirmn.addActionListener((evt) -> {
-                new NumConfirm(res).show();
-            });
-        }else{
-            btnconfirmn.setHidden(true);
-            
-        }
+        
         if(u.getUser_id()!=UserService.getCurrentUser().getUser_id()){
             
             numTel.setHidden(true);

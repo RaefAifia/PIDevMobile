@@ -72,15 +72,15 @@ public class Reclamations extends BaseForm {
      EncodedImage enc;
      String urlimg = "http://localhost/pi_symfony/public/images/profil/";
     public Reclamations(Form previous, Resources res) {  
-    super("Newsfeed", BoxLayout.y());
-    Toolbar tb = new Toolbar(true);
+        super("Newsfeed", BoxLayout.y());
+        Toolbar tb = new Toolbar(true);
         setToolbar(tb);
         getTitleArea().setUIID("Container");
-//        super.addSideMenu(res);
+        super.addSideMenu(res);
 
         
     // super.addSideMenu(res);
-      Image img1 = res.getImage("profile-background.jpg");
+      Image img1 = res.getImage("11.jpg");
         if(img1.getHeight() > Display.getInstance().getDisplayHeight() / 3) {
             img1 = img1.scaledHeight(Display.getInstance().getDisplayHeight() / 3);
         }
@@ -105,7 +105,7 @@ public class Reclamations extends BaseForm {
 //          updateArrowPosition(barGroup.getRadioButton(barGroup.getSelectedIndex()), arrow);
 //        });
         ReclamationService ME = new ReclamationService();
-        for (Reclamation eee : ME.getAllRecs()) {
+        for(Reclamation eee : ME.getAllRecs(UserService.getCurrentUser().getUser_id())) {
            
          String urli="logo.png";
         EncodedImage placeholder = EncodedImage.createFromImage(Image.createImage(20, 90),false);
@@ -120,7 +120,13 @@ public class Reclamations extends BaseForm {
       //  addButton(res.getImage("news-item-2.jpg"), "Fusce ornare cursus masspretium tortor integer placera.", true, 15, 21);
         //addButton(res.getImage("news-item-3.jpg"), "Maecenas eu risus blanscelerisque massa non amcorpe.", false, 36, 15);
        // addButton(res.getImage("news-item-4.jpg"), "Pellentesque non lorem diam. Proin at ex sollicia.", false, 11, 9);
-    }  }
+    } 
+        Button add = new Button("ajouter");
+        add.addActionListener((evt) -> {
+            new ajouterReclamation(res).show();
+        });
+        add(add);
+    }
   
     
    
@@ -171,7 +177,9 @@ private void addTab(Tabs swipe, Image img, Label spacer, String text) {
      cnt.add(BorderLayout.CENTER, BoxLayout.encloseX(ta));
 
        add(cnt);
-        image.addActionListener( e -> 
+       
+     //System.out.println(o1.getSujet());
+        image.addActionListener( e ->
                new ReclamationInfo(o, res).show()
        );
        

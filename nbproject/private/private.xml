@@ -19,9 +19,11 @@
             <file>file:/C:/Users/asus/Documents/NetBeansProjects/pidev_xcode/src/com/mycompany/myapp/utils/EmailSend.java</file>
             <file>file:/C:/Users/asus/Documents/NetBeansProjects/pidev_xcode/src/com/mycompany/myapp/gui/List.java</file>
             <file>file:/C:/Users/asus/Documents/NetBeansProjects/pidev_xcode/src/com/mycompany/myapp/entities/User.java</file>
+            <file>file:/C:/Users/asus/Documents/NetBeansProjects/pidev_xcode/src/com/mycompany/myapp/entities/Relations.java</file>
             <file>file:/C:/Users/asus/Documents/NetBeansProjects/pidev_xcode/src/com/mycompany/myapp/services/UserService.java</file>
             <file>file:/C:/Users/asus/Documents/NetBeansProjects/pidev_xcode/src/com/mycompany/myapp/gui/ReclamationInfo.java</file>
             <file>file:/C:/Users/asus/Documents/NetBeansProjects/pidev_xcode/src/com/mycompany/myapp/gui/SignUp.java</file>
+            <file>file:/C:/Users/asus/Documents/NetBeansProjects/pidev_xcode/src/com/mycompany/myapp/services/RelationService.java</file>
         </group>
     </open-files>
 </project-private>

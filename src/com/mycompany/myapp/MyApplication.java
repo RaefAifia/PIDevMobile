@@ -54,8 +54,8 @@ public class MyApplication {
     }
     
     public void start() {
-       Form f = new Form();
-         new Reclamations(f, theme).show();
+       
+         new login(theme).show();
        
     }
 
