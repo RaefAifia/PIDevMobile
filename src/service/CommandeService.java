@@ -68,9 +68,9 @@ public class CommandeService {
     }
        
        
-        public void AjoutCmd(){
+        public void AjoutCmd(int uid){
         ConnectionRequest con = new ConnectionRequest();
-        String url = Statics.BASE_URL+"/commande/newcc";
+        String url = Statics.BASE_URL+"/commande/newcc/"+uid;
         
         con.setUrl(url);
         con.addResponseListener((e)->{

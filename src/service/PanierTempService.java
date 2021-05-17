@@ -75,9 +75,9 @@ public class PanierTempService {
        
        
 
-   public ArrayList<PanierTemp> getListPant(){       
+   public ArrayList<PanierTemp> getListPant(int uid){       
         ConnectionRequest con = new ConnectionRequest();
-    String url = Statics.BASE_URL+"/panier/temp/pant";
+    String url = Statics.BASE_URL+"/panier/temp/pant/"+uid;
      con.setUrl(url);
            con.addResponseListener(new ActionListener<NetworkEvent>() {
             @Override
@@ -92,9 +92,9 @@ public class PanierTempService {
    }
    
    
-   public void AjoutPanT(int id){
+   public void AjoutPanT(int id, int uid){
         ConnectionRequest con = new ConnectionRequest();
-        String url = Statics.BASE_URL+"/panier/temp/newcc/"+id;
+        String url = Statics.BASE_URL+"/panier/temp/newcc/"+id+"/"+uid;
         con.setUrl(url);
         con.addResponseListener((e)->{
             String str = new String(con.getResponseData());

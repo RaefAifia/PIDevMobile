@@ -259,7 +259,7 @@ private void addTab(Tabs swipe, Image img, Label spacer, String text) {
          
           int i;
           boolean exists=false;
-          List<PanierTemp> lpt = PanierTempService.getInstance().getListPant();
+          List<PanierTemp> lpt = PanierTempService.getInstance().getListPant(17);
             PanierTemp pt = new PanierTemp();
              for(i=0;i<lpt.size();i++){
                  
@@ -276,7 +276,7 @@ private void addTab(Tabs swipe, Image img, Label spacer, String text) {
              InfiniteProgress ip = new InfiniteProgress();
              final Dialog iDialog = ip.showInfiniteBlocking();
              
-             PanierTempService.getInstance().AjoutPanT(o.getOeuvrage_id());
+             PanierTempService.getInstance().AjoutPanT(o.getOeuvrage_id(),17);
              
              iDialog.dispose();
              Dialog.show("Succès","Oeuvre ajouté au panier!",new Command("OK"));

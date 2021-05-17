@@ -92,10 +92,10 @@ public class PanierService {
         return pan;
     }
        
-             public void AjoutPan(){
+             public void AjoutPan(int uid){
         ConnectionRequest con = new ConnectionRequest();
          
-        String url = Statics.BASE_URL+"/pan/newc";
+        String url = Statics.BASE_URL+"/pan/newc/"+uid;
          
         con.setUrl(url);
         con.addResponseListener((e)->{

@@ -14,6 +14,9 @@ import com.codename1.components.ToastBar;
 import com.codename1.io.FileSystemStorage;
 import com.codename1.io.Log;
 import com.codename1.io.Util;
+import com.codename1.io.rest.Response;
+import com.codename1.io.rest.Rest;
+import com.codename1.ui.BrowserComponent;
 import com.codename1.ui.Button;
 import com.codename1.ui.ButtonGroup;
 import com.codename1.ui.Command;
@@ -38,6 +41,7 @@ import com.codename1.ui.TextArea;
 import com.codename1.ui.Toolbar;
 import com.codename1.ui.URLImage;
 import com.codename1.ui.events.ActionEvent;
+import static com.codename1.ui.events.ActionEvent.Type.Response;
 import com.codename1.ui.events.ActionListener;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
@@ -46,15 +50,18 @@ import com.codename1.ui.layouts.GridLayout;
 import com.codename1.ui.layouts.LayeredLayout;
 import com.codename1.ui.plaf.Style;
 import com.codename1.ui.util.Resources;
+import com.codename1.util.Base64;
 import entities.Oeuvre;
 import entities.PanierTemp;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import service.CommandeService;
 import service.OeuvrageService;
 import service.PanierService;
 import service.PanierTempService;
+import utils.Statics;
 
 /**
  *
@@ -164,7 +171,7 @@ public class ListPan extends Form{
         
         PanierTempService ME = new PanierTempService();
         
-        for (PanierTemp eee : ME.getListPant() ) {
+        for (PanierTemp eee : ME.getListPant(17) ) {
             Oeuvre ee = new Oeuvre();
                 enc = EncodedImage.createFromImage(Image.createImage(this.getWidth()/3, this.getWidth()/3),false);  
                       img = URLImage.createToStorage(enc, eee.getOeuv().getImg(), urlimg+eee.getOeuv().getImg());
@@ -177,7 +184,7 @@ public class ListPan extends Form{
         //addButton(res.getImage("news-item-3.jpg"), "Maecenas eu risus blanscelerisque massa non amcorpe.", false, 36, 15);
        // addButton(res.getImage("news-item-4.jpg"), "Pellentesque non lorem diam. Proin at ex sollicia.", false, 11, 9);
     }
-        
+        if(ME.getListPant(17).size()>0){
         Button ValidPan = new Button("Valider");
         Container content = BoxLayout.encloseY(
                 ValidPan     
@@ -186,6 +193,7 @@ public class ListPan extends Form{
         add(content);
         
             ValidPan.addActionListener(e -> {
+                
             
             try{
                 
@@ -193,10 +201,10 @@ public class ListPan extends Form{
              final Dialog iDialog = ip.showInfiniteBlocking();
              
              
-             CommandeService.getInstance().AjoutCmd();
+             CommandeService.getInstance().AjoutCmd(17);
              
 
-             PanierService.getInstance().AjoutPan();
+             PanierService.getInstance().AjoutPan(17);
              
  
              iDialog.dispose();
@@ -205,12 +213,31 @@ public class ListPan extends Form{
              refreshTheme();
             }catch(Exception ex){
              ex.printStackTrace();
-         }   
+         }
+//            Form fm_brw = new Form("Facture");
+//            fm_brw.setLayout(new BorderLayout());
+//
+//            BrowserComponent browser = new BrowserComponent();
+//            browser.setURL(Statics.BASE_URL+"/pan/facture/pdfnav");
+//
+//            fm_brw.addComponent(BorderLayout.CENTER, browser);
+//            fm_brw.show();
+                String accountSID = "AC56f3ead8087bbfe5e27bbe684f25ebee";
+                String authToken = "21386331f18505898c1f2afb43df7514";
+                String fromPhone = "+12397348513";
+                Response<Map> result = Rest.post("https://api.twilio.com/2010-04-01/Accounts/" + accountSID + "/Messages.json").
+                basicAuth(accountSID, authToken).
+            queryParam("To", "+21651925246").
+            queryParam("From", fromPhone).
+            queryParam("Body", "Votre commande est bien validé").
+           
+            getAsJsonMap();
+                System.out.println("============" +result);
             });
+                
     
     
-    
-    }
+    }}
   
     
     private void updateArrowPosition(Button b, Label arrow) {
