@@ -41,7 +41,6 @@ public class FavorisOService {
         try {
             oeuvres=new ArrayList<>();
             JSONParser j = new JSONParser();
-              
             Map<String,Object> tasksListJson = j.parseJSON(new CharArrayReader(jsonText.toCharArray()));
         List<Map<String,Object>> list = (List<Map<String,Object>>)tasksListJson.get("root");
       

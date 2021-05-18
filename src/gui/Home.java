@@ -30,8 +30,8 @@ public class Home extends Form{
         Button btnAddTask = new Button("Add Task");
         Button btnListTasks = new Button("List Tasks");
 
-       
         btnListTasks.addActionListener(e -> new ListOeuvre(current, theme).show());
+        btnAddTask.addActionListener(e -> new MesOffres(current, theme).show());
         addAll(btnAddTask, btnListTasks);
 
     }

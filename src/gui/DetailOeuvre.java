@@ -10,7 +10,6 @@ import com.codename1.components.ScaleImageLabel;
 import com.codename1.components.SpanLabel;
 import com.codename1.ui.Button;
 import com.codename1.ui.ButtonGroup;
-import com.codename1.ui.Calendar;
 import com.codename1.ui.Component;
 import static com.codename1.ui.Component.BOTTOM;
 import static com.codename1.ui.Component.CENTER;
@@ -41,9 +40,15 @@ import com.codename1.ui.layouts.LayeredLayout;
 import com.codename1.ui.plaf.Border;
 import com.codename1.ui.plaf.Style;
 import com.codename1.ui.util.Resources;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 import entities.Oeuvre;
+import entities.RatingO;
+
 import service.FavorisOService;
-import service.OeuvrageService;
+import service.RatingOService;
 
 /**
  *
@@ -51,8 +56,12 @@ import service.OeuvrageService;
  */
 public class DetailOeuvre extends Form{
     Label comments ;
-      
-     Label ra = new Label();
+       RatingOService r = new RatingOService();
+RatingO rtest = new RatingO();
+Container cnt1;
+ Form f1;
+    Form detaille;
+   
     String urlimg = "http://localhost/PIDevWEB/public/PI/IMG/";
      public DetailOeuvre(Form previous, Resources res , Oeuvre o) 
      {  
@@ -157,7 +166,7 @@ Toolbar tb = new Toolbar(true);
               EncodedImage   enc = EncodedImage.createFromImage(Image.createImage(this.getWidth(), this.getWidth()),false); 
                URLImage  img = URLImage.createToStorage(enc, o.getImg(), " http://localhost/PIDevWEB/public/PI/IMG/"+o.getImg());
              iv.setImage(img.scaled(700, 700));
-             System.out.println(img);
+            
                if (o.getQuantite()==0){
                    comments = new Label("hors stock", "Label");
                }
@@ -168,7 +177,7 @@ Toolbar tb = new Toolbar(true);
 Button b= new Button("  ","ButtonF");
 Oeuvre test = new Oeuvre();
 FavorisOService.getInstance().isfav(o, 1, test);
-        System.out.println(test.getOeuvrage_id());
+     
        Style s = new Style(b.getUnselectedStyle());
        Style s1 = new Style(b.getUnselectedStyle());
            s.setFgColor(0xff2d32);
@@ -182,7 +191,8 @@ FavorisOService.getInstance().isfav(o, 1, test);
  }
   b.addActionListener( e -> {
      FavorisOService.getInstance().isfav(o, 1, test);
-        System.out.println(test.getOeuvrage_id());
+        
+    
      if(test.getOeuvrage_id()==0) {
           // FontImage.setMaterialIcon(b, FontImage.MATERIAL_FAVORITE);
             FavorisOService.getInstance().ajoutFAv(o,1);
@@ -199,7 +209,7 @@ Container cntF = new Container(BoxLayout.xRight());
 cntF.add(b);
 add(cntF);   
 add(iv);
-Container cnt1 = 
+ cnt1 = 
             LayeredLayout.encloseIn(
                 BoxLayout.encloseXCenter(
                     BoxLayout.encloseY(
@@ -218,48 +228,36 @@ Container cnt1 =
                 ))
             );
 
-add(cnt1);
-/// ************* RATING **************
-Button bnom = new Button("Noter");
-Button breclam = new Button("Réclamer");
+
+/// ********************
+
+
 
  
  
     // ServiceRating serv = new ServiceRating();
-           int value = 2; 
            
-//           for (Rating R : serv.getList2()) {
-//                System.out.println("----idMembre----->" + c.getIdMembre());
-//                System.out.println("---idpage-->" + c.getId());
-//                System.out.println("----nb----->" + R.getNbrRating());
-//                System.out.println("---------------------------------------");
-//                System.out.println("----idMembreR----->" + Float.parseFloat(R.getId_membre()));
-//                
-//                if ((int) Float.parseFloat(R.getId_membre()) == 12 && c.getId() == R.getId_pagecommercial()) {
-//                        value=(int) Float.parseFloat(R.getNbrRating());
-//                
-//                } 
-//            }
-             if (value!=0)
-                    showStarPickingForm(this,value);
-                    else
-                    showStarPickingForm(this,0);
- 
-//            bRating.addActionListener((e) -> {
-//                //ServiceRating ser = new ServiceRating();
-//                Rating t1 = new Rating(c.getId(), Integer.toString(c.getIdMembre()), ra.getText());
-//                ser.ajoutRating(t1);
-//            });
+           
 
+ RatingOService.getInstance().israte(o, 1, rtest);
+ int value = (int)rtest.getNote();             
+ if (value!=-1)
+                    showStarPickingForm(this,value, o);
+                    else
+                    showStarPickingForm(this,0, o);
+//               
+//            });
 //            detaille.getToolbar().addCommandToRightBar("back", null, (ev) -> {
 //                f.show();
 //            });
             
 
 
-add(bnom);
-// mimi 
-//if () {
+// raef
+Button breclam = new Button("Ajouter au panier");
+
+
+add(cnt1);
          add(breclam);
 //}
 
@@ -316,13 +314,10 @@ add(bnom);
     private void bindButtonSelection3(Form previous,Resources res, Button b, Label arrow) {
        b.addActionListener(e -> {
             if(b.isSelected()) {
-             
-                
             }
         });
     }
-  
-    // **********Rating************* 
+    // ******************** 
     
     private void initStarRankStyle(Style s, Image star) {
         s.setBackgroundType(Style.BACKGROUND_IMAGE_TILE_BOTH);
@@ -330,8 +325,8 @@ add(bnom);
         s.setBgImage(star);
         s.setBgTransparency(0);
     }
-
-    private Slider createStarRankSlider(int v) {
+    
+    private Slider createStarRankSlider(int v, Oeuvre o) {
         Slider starRank = new Slider();
         starRank.setEditable(true);
         starRank.setMinValue(0);
@@ -348,26 +343,90 @@ add(bnom);
         initStarRankStyle(starRank.getSliderFullSelectedStyle(), fullStar);
         initStarRankStyle(starRank.getSliderFullUnselectedStyle(), fullStar);
         starRank.setPreferredSize(new Dimension(fullStar.getWidth() * 5, fullStar.getHeight()));
-
-        
-        if (v!=0)
+        if (v!=-1)
         {
             starRank.setProgress(v);
-            starRank.setEditable(false);
+           // starRank.setEditable(false);
+           
         }
         else starRank.setEditable(true);
-        
-        
         starRank.addActionListener(e -> {
+        RatingOService.getInstance().israte(o, 1, rtest);
+      int value = (int)rtest.getNote();             
+    if (value!=-1)
+        {
+//           
             System.out.println(starRank.getProgress());
-            ra.setText(Integer.toString(starRank.getProgress()));
+            r.modifiernote(o, 1,starRank.getProgress());
+            
+            
+            
+       //*******************
+       
+        }
+              else {
+            System.out.println(starRank.getProgress());
+                r.ajoutnote(o,1,starRank.getProgress());
+              }
 
         });
         return starRank;
     }
+    private void showStarPickingForm(Form f,int v, Oeuvre o) {
+        f.add(FlowLayout.encloseCenter(createStarRankSlider(v, o)));
+    
 
-    private void showStarPickingForm(Form f,int v) {
-        f.add(FlowLayout.encloseCenter(createStarRankSlider(v)));
-
+    }
+    
+    
+    
+    //***********************
+    
+        
+         private static BitMatrix generateMatrix(String data, int size) {
+        BitMatrix bitMatrix = null;
+        try {
+            bitMatrix = new QRCodeWriter().encode(data, BarcodeFormat.QR_CODE, size, size);
+            return bitMatrix;
+        } catch (WriterException ex) { } 
+        return bitMatrix;
+    }
+        
+    
+     private static Image getImageFromBitMatrix(final int width, final int height, final BitMatrix qrCodeBits) {
+        Image qrCodeImg = null;
+        int fillColor = 0x000000; // White is the default fill color
+        qrCodeImg = Image.createImage(width, height, fillColor);
+        Graphics g = qrCodeImg.getGraphics();
+        drawBarCode(g, 0, 0, width, height, qrCodeBits);
+        return qrCodeImg;
+    }
+        private static void drawBarCode(Graphics g, int xOffset, int yOffset, int width, int height, final BitMatrix qrCodeBits) {
+        // Set the line drawing color to black
+         g.setColor(0x000000);
+        for (int y = 0; y < height; y++) {
+            int x = 0;
+            while (x < width) {
+                if (qrCodeBits.get(x, y)) {
+                    int lineStartPoint = x;
+                    int curEndPoint = x;
+                    // True - means this pixel is black, go and find the end of this line
+                    while (curEndPoint < width && qrCodeBits.get(curEndPoint, y)) {
+                        curEndPoint++; // check next pixel
+                    }
+                    if (curEndPoint >= width) {
+                        x = width - 1; // reached end of line
+                    } else {
+                        x = curEndPoint;
+                    }
+                    g.drawLine(lineStartPoint + xOffset,
+                            y + yOffset,
+                            x + xOffset,
+                            y + yOffset);
+                }
+                x++; // Check next pixel
+            }
+        }
+       
     }
 }

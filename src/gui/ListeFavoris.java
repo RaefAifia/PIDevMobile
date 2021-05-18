@@ -258,6 +258,7 @@ private void addTab(Tabs swipe, Image img, Label spacer, String text) {
        b.addActionListener(e -> {
             if(b.isSelected()) {
                 updateArrowPosition(b, arrow);
+                 //raef
             }
         });
     }
