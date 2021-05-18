@@ -17,6 +17,7 @@ import com.codename1.ui.Form;
 import com.codename1.ui.Image;
 import com.codename1.ui.Label;
 import com.codename1.ui.Toolbar;
+import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.layouts.LayeredLayout;
 import com.codename1.ui.layouts.Layout;
@@ -29,7 +30,8 @@ import com.codename1.ui.util.Resources;
  * @author Shai Almog
  */
 public class BaseForm extends Form {
-
+//Form forme= new Form (new BorderLayout());
+    Form forme;
     public BaseForm() {
     }
 
@@ -73,7 +75,7 @@ public class BaseForm extends Form {
         ));
         System.out.println("heellll"
                 + "");
-        tb.addMaterialCommandToSideMenu("Newsfeed", FontImage.MATERIAL_UPDATE, e -> new afficher(res).show());
+        tb.addMaterialCommandToSideMenu("Formation", FontImage.MATERIAL_UPDATE, e -> new afficher(forme,res).show());
 //        tb.addMaterialCommandToSideMenu("Profile", FontImage.MATERIAL_SETTINGS, e -> new ProfileForm(res).show());
 //        tb.addMaterialCommandToSideMenu("Logout", FontImage.MATERIAL_EXIT_TO_APP, e -> new WalkthruForm(res).show());
     }

@@ -12,7 +12,7 @@ import java.util.Objects;
  * @author HELA
  */
 public class Formation {
-  
+  private int nbInsc;
     private String titre;
     private int isvalid;
    // public Users u1;
@@ -48,11 +48,16 @@ public class Formation {
         this.description = description;
         this.image = image;
     }
-  
-  
-  
-  
 
+    public int getNbInsc() {
+        return nbInsc;
+    }
+
+    public void setNbInsc(int nbInsc) {
+        this.nbInsc = nbInsc;
+    }
+  
+  
     public void setImage(String image) {
         this.image = image;
     }

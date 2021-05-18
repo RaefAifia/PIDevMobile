@@ -18,6 +18,18 @@ public class Cours {
       private String file;
      private int formation_id;
      public  Formation f = new Formation();
+     private String media ;
+
+    public String getMedia() {
+        return media;
+    }
+
+    public void setMedia(String media) {
+        this.media = media;
+    }
+    
+     
+     
      
     public Cours() {
         

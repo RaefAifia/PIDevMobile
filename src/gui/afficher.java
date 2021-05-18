@@ -15,12 +15,16 @@ import com.codename1.ui.Container;
 import com.codename1.ui.Display;
 import com.codename1.ui.EncodedImage;
 import com.codename1.ui.FontImage;
+import com.codename1.ui.Form;
 import com.codename1.ui.Graphics;
 import com.codename1.ui.Image;
+import com.codename1.ui.InfiniteContainer;
 import com.codename1.ui.Label;
 import com.codename1.ui.RadioButton;
+import com.codename1.ui.Slider;
 import com.codename1.ui.Tabs;
 import com.codename1.ui.TextArea;
+import com.codename1.ui.TextField;
 import com.codename1.ui.Toolbar;
 import com.codename1.ui.URLImage;
 import com.codename1.ui.events.ActionEvent;
@@ -36,7 +40,7 @@ import com.codename1.ui.util.Resources;
 import com.codename1.ui.util.UIBuilder;
 import entities.Formation;
 import java.util.ArrayList;
-import service.FormationService;
+import services.FormationService;
 
 /**
  *
@@ -45,28 +49,200 @@ import service.FormationService;
 public class afficher extends BaseForm{
     
      private Resources theme;
-     public afficher(Resources res)  {
+//     String search = null;  
+         ArrayList<Formation> data = new ArrayList<Formation>();
+     public afficher(Form forme,Resources res)  {
          
          
-        super("Newsfeed", BoxLayout.y());
-        
-        
+        super("Les Formations", BoxLayout.y());
+                 Form f2 = new Form(BoxLayout.y());
+ f2.setTitle("My School");
+ f2.setUIID("backgroundd");
+        Container c1 = new Container(BoxLayout.y());  
         Toolbar tb = new Toolbar(true);
         setToolbar(tb);
-        getTitleArea().setUIID("Container");
-        setTitle("Newsfeed");
-        getContentPane().setScrollVisible(false);
-        
+       
+//        getTitleArea().setUIID("Container");
+//        setTitle("Newsfeed");
+      //  getContentPane().setScrollVisible(false);
+         TextField tfmatiere = new TextField("", "recherche");
+//            Button rechercher = new Button();
+//                   rechercher.setText("chercher");
+                   
+                   
+//                    Button pay = new Button();
+//                   pay.setText("pay"); 
+//                   
+//                   pay.addActionListener((e)->{
+//                       System.out.println("ey");
+//               OrderF of =    new OrderF();
+//              OrderF.startOrder(c);
+//                       System.out.println("ey ey ");
+//                   });
+//                   
+        // c1.add(tfmatiere); 
+            //   c1.add(rechercher); 
+                // c1.add(pay);   
+            //  this.add(c1);
+              
+              
         super.addSideMenu(res);
-        tb.addSearchCommand(e -> {});
+        
+        
+        tb.addSearchCommand((evt) -> {
+            if (tfmatiere.getText().length() != 0) {
+               FormationService fs = new FormationService(); 
+            data = fs.getSearchR(tfmatiere.getText()); 
+            
+            
+        }}
+            
+            );
+//           
+//         rechercher.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent evt) {
+//              if (tfmatiere.getText().length() != 0) {
+//               FormationService fs = new FormationService(); 
+//            data = fs.getSearchR(tfmatiere.getText()); 
+////              }
+////              
+//                for(int i=0; i<data.size(); i++){ 
+//                     Label l4 = new Label("\n");
+//                     l4.setUIID("labels");
+//                     Label l5 = new Label("Nom : "+data.get(i).getTitre());
+//                     l5.setUIID("labels");
+//                     Label l6 = new Label("Email : "+data.get(i).getPrix());
+//                     l6.setUIID("labels");
+//                      
+//        c1.add(l4);
+//        c1.add(l5);
+//        c1.add(l6);
+//        
+//       }
+//                
+//                  f2.add(c1);
+//                 f2.show(); 
+//              
+//            }
+//        });
+
+        
+//          TextField tfmatiere = new TextField("", "recherche");
+//            Button rechercher = new Button();
+//                   rechercher.setText("rechercher");
+//         rechercher.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent evt) {
+//                     if (tfmatiere.getText().length() != 0) {
+//                               Form f2 = new Form(BoxLayout.y());
+//            f2.setTitle("My School");
+//            f2.setUIID("backgroundd");
+//            Container c1 = new Container(BoxLayout.y());
+//            FormationService fs = new FormationService(); 
+//              data = fs.getSearchR(tfmatiere.getText()); 
+// 
+//  
+//    for(int i=0; i<data.size(); i++){ 
+//                     Label l4 = new Label("\n");
+//                     l4.setUIID("labels");
+//                     Label l5 = new Label("Nom : "+data.get(i).getTitre());
+//                     l5.setUIID("labels");
+//                     Label l6 = new Label("Email : "+data.get(i).getPrix());
+//                     l6.setUIID("labels");
+//                      
+//        c1.add(l4);
+//        c1.add(l5);
+//        c1.add(l6);
+//        
+//        }
+//            }
+//                     
+//                     );
+                 
+      
+
+//        
+//        Style st = UIManager.getInstance().getComponentStyle("Title");
+//
+//        Form hi = new Form("Toolbar", new BoxLayout(BoxLayout.Y_AXIS));
+//        TextField searchField = new TextField("", "Toolbar Search"); // <1>
+//        searchField.getHintLabel().setUIID("Title");
+//        searchField.setUIID("Title");
+//        searchField.getAllStyles().setAlignment(Component.LEFT);
+//        hi.getToolbar().setTitleComponent(searchField);
+//        FontImage searchIcon = FontImage.createMaterial(FontImage.MATERIAL_SEARCH, st);
+//        searchField.addDataChangeListener((i1, i2) -> { // <2>
+//            String t = searchField.getText();
+//            if(t.length() < 1) {
+//                for(Component cmp : hi.getContentPane()) {
+//                    cmp.setHidden(false);
+//                    cmp.setVisible(true);
+//        }
+//    } else {
+//        t = t.toLowerCase();
+//        for(Component cmp : hi.getContentPane()) {
+//            String val = null;
+//            if(cmp instanceof Label) {
+//                val = ((Label)cmp).getText();
+//            } else {
+//                if(cmp instanceof TextArea) {
+//                    val = ((TextArea)cmp).getText();
+//                } else {
+//                    val = (String)cmp.getPropertyValue("text");
+//                }
+//            }
+//            boolean show = val != null && val.toLowerCase().indexOf(t) > -1;
+//            cmp.setHidden(!show); // <3>
+//            cmp.setVisible(show);
+//        }
+//    }
+//    hi.getContentPane().animateLayout(250);
+//});
+//hi.getToolbar().addCommandToRightBar("", searchIcon, (e) -> {
+//    searchField.startEditingAsync(); // <4>
+//});
+
+
+//            InfiniteContainer list = new InfiniteContainer () {
+//           private Formation [] formations;
+//            //public Component [] fetchComponent (int index , int )
+//          
+//            @Override
+//            public Component[] fetchComponents(int index, int amount) {
+//                
+//                if (search!=null && search.length()>0){
+//            ArrayList<Formation> ff = new ArrayList<Formation>();
+//            search = search.toLowerCase();
+//            for (Formation f : formations) {
+//            if (f.getTitre().toLowerCase().indexOf(search) > - 1)
+//                    {ff.add(f);}                      
+//                     }
+//            
+//            formations= new Formation[ff.size()];
+//ff.toArray(formations);
+//                 }
+//                 return fetchComponents(index, amount);
+//            }
+//             tb.addSearchCommand(e -> {
+//                 search = e.getSource();
+//        list.refresh();
+//        
+//        });
+//            
+//            }
+        
+        
+        
+       
         
         Tabs swipe = new Tabs();
 
         Label spacer1 = new Label();
         Label spacer2 = new Label();
-        addTab(swipe, res.getImage("news-item.jpg"), spacer1, "15 Likes  ", "85 Comments", "Integer ut placerat purued non dignissim neque. ");
-        addTab(swipe, res.getImage("dog.jpg"), spacer2, "100 Likes  ", "66 Comments", "Dogs are cute: story at 11");
-                
+//        addTab(swipe, res.getImage("news-item.jpg"), spacer1, "15 Likes  ", "85 Comments", "Integer ut placerat purued non dignissim neque. ");
+//        addTab(swipe, res.getImage("dog.jpg"), spacer2, "100 Likes  ", "66 Comments", "Dogs are cute: story at 11");
+  addTab(swipe, res.getImage("news-item.jpg"), spacer1, " Liste des formations");     
         swipe.setUIID("Container");
         swipe.getContentPane().setUIID("Container");
         swipe.hideTabs();
@@ -95,7 +271,7 @@ public class afficher extends BaseForm{
             radioContainer.add(rbs[iter]);
         }
                 
-        rbs[0].setSelected(true);
+       // rbs[0].setSelected(true);
         swipe.addSelectionListener((i, ii) -> {
             if(!rbs[ii].isSelected()) {
                 rbs[ii].setSelected(true);
@@ -106,85 +282,128 @@ public class afficher extends BaseForm{
         add(LayeredLayout.encloseIn(swipe, radioContainer));
         
         ButtonGroup barGroup = new ButtonGroup();
-        RadioButton all = RadioButton.createToggle("All", barGroup);
-        all.setUIID("SelectBar");
-        RadioButton featured = RadioButton.createToggle("Featured", barGroup);
-        featured.setUIID("SelectBar");
-        RadioButton popular = RadioButton.createToggle("Popular", barGroup);
-        popular.setUIID("SelectBar");
-        RadioButton myFavorite = RadioButton.createToggle("My Favorites", barGroup);
-        myFavorite.setUIID("SelectBar");
-        Label arrow = new Label(res.getImage("news-tab-down-arrow.png"), "Container");
-        
-        add(LayeredLayout.encloseIn(
-                GridLayout.encloseIn(4, all, featured, popular, myFavorite),
-                FlowLayout.encloseBottom(arrow)
-        ));
-        
-        all.setSelected(true);
-        arrow.setVisible(false);
-        addShowListener(e -> {
-            arrow.setVisible(true);
-            updateArrowPosition(all, arrow);
-        });
-        bindButtonSelection(all, arrow);
-        bindButtonSelection(featured, arrow);
-        bindButtonSelection(popular, arrow);
-        bindButtonSelection(myFavorite, arrow);
+        Button b = new Button("Liste des formations");
+//        RadioButton list_f = RadioButton.createToggle("Liste des formations", barGroup);
+//        list_f.setUIID("SelectBar");
+//        RadioButton featured = RadioButton.createToggle("Featured", barGroup);
+//        featured.setUIID("SelectBar");
+//       
+//        RadioButton myFavorite = RadioButton.createToggle("My Favorites", barGroup);
+//        myFavorite.setUIID("SelectBar");
+//        Label arrow = new Label(res.getImage("news-tab-down-arrow.png"), "Container");
+//        
+//        add(LayeredLayout.encloseIn(
+//                GridLayout.encloseIn(3, list_f, featured,  myFavorite),
+//                FlowLayout.encloseBottom(arrow)
+//        ));
+//        
+//        list_f.setSelected(true);
+//        arrow.setVisible(false);
+//        addShowListener(e -> {
+//            arrow.setVisible(true);
+//            updateArrowPosition(list_f, arrow);
+//        });
+//         bindButtonSelection1(forme, res,list_f, arrow);
+//        bindButtonSelection(featured, arrow);
+//       
+//        bindButtonSelection(myFavorite, arrow);
         
         // special case for rotation
-        addOrientationListener(e -> {
-            updateArrowPosition(barGroup.getRadioButton(barGroup.getSelectedIndex()), arrow);
-        });
+//        addOrientationListener(e -> {
+//            updateArrowPosition(barGroup.getRadioButton(barGroup.getSelectedIndex()), arrow);
+//        });
 //        
 //        Image img ;
 //            EncodedImage placeholder = EncodedImage.createFromImage(Image.createImage(this.getWidth()/3, this.getWidth()/3),false);
 //            URLImage urlImage = URLImage.createToStorage(placeholder, gm.getImage(), "http://localhost/PIDevWEB-main/public/images1/"+gm.getImage());
 //            img.setImage(urlImage);
 //        
-//        ArrayList<Formation> list_e = new FormationService().getList2();
-//      //  ArrayList<ListeParticipant> list_p = new ServiceEvenement().Afficher();
-//        
-//    
-//        for(Formation gmi :  list_e )
-//         
-//      //  { cnt2.add(addItemEvent(gmi));}
-//        
-//        { addButton(res.getImage("news-item-1.jpg"), gmi.getTitre(), false, 26, 32);}
-        
-        
-//        addButton(res.getImage("news-item-1.jpg"), "Fusce ornare cursus masspretium tortor integer placera.", true, 15, 21);
-//        addButton(res.getImage("news-item-3.jpg"), "Maecenas eu risus blanscelerisque massa non amcorpe.", false, 36, 15);
-//        addButton(res.getImage("news-item-4.jpg"), "Pellentesque non lorem diam. Proin at ex sollicia.", false, 11, 9);
 
 
 // hedha eli zedtou ena 
-      theme = UIManager.initFirstTheme("/theme");
-          Tabs tab = new Tabs();
-        UIBuilder ui = new UIBuilder();
-       
-        Container cnt2 = ui.createContainer(theme, "GUI 1");//ajouter graphiquement un GUI element
-        tab.addTab("", cnt2);
-        //creer un groupe 
-        Button ajouterBtn = new Button("ajouter une formation");
-//        ajouterBtn.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent evt) {
-//                new RefugiesAjouterInterface().show();
+//      theme = UIManager.initFirstTheme("/theme");
+//          Tabs tab = new Tabs();
+//        UIBuilder ui = new UIBuilder();
+//       
+//        Container cnt2 = ui.createContainer(theme, "GUI 1");//ajouter graphiquement un GUI element
+//        tab.addTab("", cnt2);
+//
+//        this.add(tab);
+
+
+          //  search tbadel 3onwen tool bar
+            //prepare field
+//            TextField searchField;
+//            searchField = new TextField("", "Articles' List");
+//            searchField.getHintLabel().setUIID("Title");
+//            searchField.setUIID("Title");
+//            getToolbar().setTitleComponent(searchField);
+//            //if field content changed
+//            searchField.addDataChangeListener((i1, i2) -> {
+//            String t = searchField.getText();
+//            if(t.length() < 1) {
+//            for(Component cmp : getContentPane()) {
+//            cmp.setHidden(false);
+//            cmp.setVisible(true);
 //            }
-        //});
-        this.add(tab).add(ajouterBtn);
-        
+//            } else {
+//            t = t.toLowerCase();
+//            for(Component cmp: getContentPane()) {
+//            //tekhou el val ta3 el champ : champ li 3malt 3lih el recherche type span label (emplacement : container->container->spanlabel )
+//         //  String val = ((SpanLabel) ((Container)((Container) cmp).getComponentAt(0)).getComponentAt(0)).getText();
+//            System.out.println( val );
+//            boolean show = val != null && val.toLowerCase().indexOf(t) > -1;
+//            cmp.setHidden(!show);
+//            cmp.setVisible(show);
+//               FormationService fs = new FormationService(); 
+//            data = fs.getSearchR(tfmatiere.getText()); 
+//              for(int i=0; i<data.size(); i++){ 
+//                     Label l4 = new Label("\n");
+//                     l4.setUIID("labels");
+//                     Label l5 = new Label("Nom : "+data.get(i).getTitre());
+//                     l5.setUIID("labels");
+//                     Label l6 = new Label("Email : "+data.get(i).getPrix());
+//                     l6.setUIID("labels");
+//                      
+//        c1.add(l4);
+//        c1.add(l5);
+//        c1.add(l6);
+//        
+//        }
+//            
+//            }
+//            }
+//            getContentPane().animateLayout(250);
+//            });
+            
+            
+ Slider s = new Slider();   
+       s.setEditable(true);
+       s.setMinValue(0);
+      s.setMaxValue(5);
+      s.setIncrements(1);
+    
+       Button btn = new Button("Chercher");
+       //default value 
+   //   this.add(s);
+      
         ArrayList<Formation> list_e = new FormationService().getList2();
       //  ArrayList<ListeParticipant> list_p = new ServiceEvenement().Afficher();
         
     
-        for(Formation gmi :  list_e )
-         
-        { cnt2.add(addItemEvent(gmi));}
+        for(Formation fl :  list_e ){
+        
+            EncodedImage placeholder = EncodedImage.createFromImage(Image.createImage(this.getWidth()/3, this.getWidth()/3),false);
+            URLImage urlImage = URLImage.createToStorage(placeholder,fl.getImage(), "http://localhost/PIDevWEB-main/public/images1/"+fl.getImage());
+           // img.setImage(urlImage);
+                addButton(forme, res , urlImage, fl, fl.getTitre(),false, fl.getPrix());
+                }
+          
+
+        //{ cnt2.add(addItemEvent(gmi)); }
         //this.add(cnt2);
        
-        this.show();
+       // this.show();
           
         
         
@@ -204,45 +423,46 @@ public class afficher extends BaseForm{
         
     }
     
-    private void addTab(Tabs swipe, Image img, Label spacer, String likesStr, String commentsStr, String text) {
+    private void addTab(Tabs swipe, Image img, Label spacer,  String text) {
         int size = Math.min(Display.getInstance().getDisplayWidth(), Display.getInstance().getDisplayHeight());
         if(img.getHeight() < size) {
             img = img.scaledHeight(size);
         }
-        Label likes = new Label(likesStr);
-        Style heartStyle = new Style(likes.getUnselectedStyle());
-        heartStyle.setFgColor(0xff2d55);
-        FontImage heartImage = FontImage.createMaterial(FontImage.MATERIAL_FAVORITE, heartStyle);
-        likes.setIcon(heartImage);
-        likes.setTextPosition(RIGHT);
+       
+//        Style heartStyle = new Style(likes.getUnselectedStyle());
+//        heartStyle.setFgColor(0xff2d55);
+//        FontImage heartImage = FontImage.createMaterial(FontImage.MATERIAL_FAVORITE, heartStyle);
+//        likes.setIcon(heartImage);
+//        likes.setTextPosition(RIGHT);
 
-        Label comments = new Label(commentsStr);
-        FontImage.setMaterialIcon(comments, FontImage.MATERIAL_CHAT);
+     //   FontImage.setMaterialIcon(comments, FontImage.MATERIAL_CHAT);
         if(img.getHeight() > Display.getInstance().getDisplayHeight() / 2) {
             img = img.scaledHeight(Display.getInstance().getDisplayHeight() / 2);
-        }
+        
         ScaleImageLabel image = new ScaleImageLabel(img);
         image.setUIID("Container");
         image.setBackgroundType(Style.BACKGROUND_IMAGE_SCALED_FILL);
         Label overlay = new Label(" ", "ImageOverlay");
+      //  SpanLabel sl = new SpanLabel(text, "Title");
         
         Container page1 = 
             LayeredLayout.encloseIn(
                 image,
-                overlay,
+               
                 BorderLayout.south(
                     BoxLayout.encloseY(
-                            new SpanLabel(text, "LargeWhiteText"),
-                            FlowLayout.encloseIn(likes, comments),
+                            overlay,
+                        //    new SpanLabel(text, "LargeWhiteText"),
+                           // FlowLayout.encloseIn(likes, comments),
                             spacer
                         )
                 )
             );
 
         swipe.addTab("", page1);
-    }
+    }}
     
-   private void addButton(Image img, String title, boolean liked, int likeCount, int commentCount) {
+   private void addButton(Form forme, Resources res ,URLImage img,Formation f, String title, boolean liked, float prix) {
        int height = Display.getInstance().convertToPixels(11.5f);
        int width = Display.getInstance().convertToPixels(14f);
        Button image = new Button(img.fill(width, height));
@@ -253,27 +473,22 @@ public class afficher extends BaseForm{
        ta.setUIID("NewsTopLine");
        ta.setEditable(false);
 
-       Label likes = new Label(likeCount + " Likes  ", "NewsBottomLine");
+        Label likes = new Label(prix + " DT ", "LabelPrix");
        likes.setTextPosition(RIGHT);
-       if(!liked) {
-           FontImage.setMaterialIcon(likes, FontImage.MATERIAL_FAVORITE);
-       } else {
-           Style s = new Style(likes.getUnselectedStyle());
-           s.setFgColor(0xff2d55);
-           FontImage heartImage = FontImage.createMaterial(FontImage.MATERIAL_FAVORITE, s);
-           likes.setIcon(heartImage);
-       }
-       Label comments = new Label(commentCount + " Comments", "NewsBottomLine");
-       FontImage.setMaterialIcon(likes, FontImage.MATERIAL_CHAT);
+
        
        
        cnt.add(BorderLayout.CENTER, 
                BoxLayout.encloseY(
                        ta,
-                       BoxLayout.encloseX(likes, comments)
+                       BoxLayout.encloseX(likes)
                ));
-       add(cnt);
-       image.addActionListener(e -> ToastBar.showMessage(title, FontImage.MATERIAL_INFO));
+            Container cnt1 = new Container(BoxLayout.x()); 
+       cnt1.add(cnt);
+      add(cnt1);
+
+       image.addActionListener(e ->  
+               new FormationDetails(res,forme,f).show());
    }
     
     private void bindButtonSelection(Button b, Label arrow) {
@@ -283,43 +498,49 @@ public class afficher extends BaseForm{
             }
         });
     }
-    
-    
-     public Container addItemEvent(Formation gm){//pour remplir la liste
-        Container cn1=new Container(new BorderLayout());
-        Container cn2=new Container(BoxLayout.y());
-        Label lab=new Label(gm.getTitre());
-       // Label lab2=new Label(gm.getDesciption());
-        
-        Button btnSupp=new Button("supprimer");
-        btnSupp.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                FormationService sr = new FormationService();
-                //sr.supprimer(gm);
-                new afficherFormations().show();
+       private void bindButtonSelection1(Form previous,Resources res, Button b, Label arrow) {
+       b.addActionListener(e -> {
+            if(b.isSelected()) {
+                updateArrowPosition(b, arrow);
+                new afficher(previous, res).show();
             }
         });
-//        Button btnmodifier=new Button("modifier");
-//       btnmodifier.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent evt) {
-//             
-//                new RefugiesModifierInterface(gm).show();
-//            }
-//        });
-        Container cn3=new Container(BoxLayout.x());
-      //  cn3.add(btnSupp).add(btnmodifier);
-        
-       ImageViewer img = new ImageViewer();
-            EncodedImage placeholder = EncodedImage.createFromImage(Image.createImage(this.getWidth()/3, this.getWidth()/3),false);
-            URLImage urlImage = URLImage.createToStorage(placeholder, gm.getImage(), "http://localhost/PIDevWEB-main/public/images1/"+gm.getImage());
-            img.setImage(urlImage);
-        cn2.add(lab).add(cn3);
-        cn1.add(BorderLayout.WEST,img );
-        cn1.add(BorderLayout.CENTER,cn2);
-        
-        return cn1;
-          
-}
+    }
+    
+//     public Container addItemEvent(Formation gm){//pour remplir la liste
+//        Container cn1=new Container(new BorderLayout());
+//        Container cn2=new Container(BoxLayout.y());
+//        Button afficher = new Button("afficher");
+//        Label lab=new Label(gm.getTitre());
+//       // Label lab2=new Label(gm.getDesciption());
+//         afficher.addActionListener((evt) -> {
+//               new FormationDetails(theme,this,gm).show();
+//           });
+//
+//        
+//         
+//
+////        Button btnmodifier=new Button("modifier");
+////       btnmodifier.addActionListener(new ActionListener() {
+////            @Override
+////            public void actionPerformed(ActionEvent evt) {
+////             
+////                new RefugiesModifierInterface(gm).show();
+////            }
+////        });
+//        Container cn3=new Container(BoxLayout.x());
+//   //  cn3.add(btnSupp).add(btnmodifier);
+//        
+//       ImageViewer img = new ImageViewer();
+//            EncodedImage placeholder = EncodedImage.createFromImage(Image.createImage(this.getWidth()/3, this.getWidth()/3),false);
+//            URLImage urlImage = URLImage.createToStorage(placeholder, gm.getImage(), "http://localhost/PIDevWEB-main/public/images1/"+gm.getImage());
+//            img.setImage(urlImage);
+//          cn3.add(afficher);
+//                    cn2.add(lab).add(cn3);
+//        cn1.add(BorderLayout.WEST,img );
+//        cn1.add(BorderLayout.CENTER,cn2);
+//        
+//        return cn1;
+//          
+//}
 }

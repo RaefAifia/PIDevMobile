@@ -22,7 +22,7 @@ import com.codename1.ui.util.Resources;
 import com.codename1.ui.util.UIBuilder;
 import entities.Formation;
 import java.util.ArrayList;
-import service.FormationService;
+import services.FormationService;
 
 /**
  *

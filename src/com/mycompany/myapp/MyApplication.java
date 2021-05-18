@@ -13,8 +13,13 @@ import com.codename1.ui.Toolbar;
 import java.io.IOException;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.io.NetworkEvent;
+import com.codename1.uikit.cleanmodern.NewsfeedForm;
 import com.codename1.uikit.cleanmodern.WalkthruForm;
+import entities.Formation;
 import gui.BaseForm;
+import gui.FormationDetails;
+import gui.LocalNotificationTest;
+
 import gui.afficher;
 import gui.afficherFormations;
 
@@ -59,9 +64,14 @@ public class MyApplication {
 //        hi.add(new Label("Hi World"));
 //        hi.show();
      // new afficherFormations().show();
-       new afficher(theme).show();
-               // new BaseForm().show();
-                //new WalkthruForm(theme).show();
+new afficher(current,theme).show();
+   // new LocalNotificationTest().show();
+      // Formation f= new Formation();
+  //  new FormationDetails(theme,f).show();
+             //  new BaseForm().show();
+              //  new WalkthruForm(theme).show();
+          //    new NewsfeedForm(theme).show();
+          
                 
         }
 
