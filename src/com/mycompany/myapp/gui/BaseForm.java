@@ -17,7 +17,7 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
  */
 
-package gui;
+package com.mycompany.myapp.gui;
 
 import com.codename1.components.ScaleImageLabel;
 import com.codename1.ui.Component;
@@ -39,7 +39,7 @@ import com.codename1.ui.util.Resources;
  * @author Shai Almog
  */
 public class BaseForm extends Form {
-
+ Form f;
     public BaseForm() {
     }
 
@@ -81,9 +81,10 @@ public class BaseForm extends Form {
                 FlowLayout.encloseCenterBottom(
                         new Label(res.getImage("profile-pic.jpg"), "PictureWhiteBackgrond"))
         ));
+       
         
-//        tb.addMaterialCommandToSideMenu("Newsfeed", FontImage.MATERIAL_UPDATE, e -> new NewsfeedForm(res).show());
-//        tb.addMaterialCommandToSideMenu("Profile", FontImage.MATERIAL_SETTINGS, e -> new ProfileForm(res).show());
-//        tb.addMaterialCommandToSideMenu("Logout", FontImage.MATERIAL_EXIT_TO_APP, e -> new WalkthruForm(res).show());
+        tb.addMaterialCommandToSideMenu("Oeuvres", FontImage.MATERIAL_UPDATE, e -> new ListOeuvre(f,res).show());
+       tb.addMaterialCommandToSideMenu("Mes Oeuvres", FontImage.MATERIAL_SETTINGS, e -> new MesOeuvres(f,res).show());
+        tb.addMaterialCommandToSideMenu("Mes Offres", FontImage.MATERIAL_EXIT_TO_APP, e -> new MesOffres(f,res).show());
  }
 }

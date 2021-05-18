@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gui;
+package com.mycompany.myapp.gui;
 
 import com.codename1.components.ImageViewer;
 import com.codename1.components.ScaleImageLabel;
@@ -45,7 +45,7 @@ import service.OeuvrageService;
  */
 public class MesOeuvres extends BaseForm {
     Form f;
-
+int i = UserService.getCurrentUser().getUser_id();
     Container cn1;
     ImageViewer iv;
     URLImage img;
@@ -111,8 +111,8 @@ Toolbar tb = new Toolbar(true);
    add(LayeredLayout.encloseIn(swipe, radioContainer));
       
         OeuvrageService ME = new OeuvrageService();
-        for (Oeuvre eee : ME.getmesOeuvres(1)) {
-            System.out.println(ME.getmesOeuvres(1).size());
+        for (Oeuvre eee : ME.getmesOeuvres(i)) {
+            System.out.println(ME.getmesOeuvres(i).size());
                enc = EncodedImage.createFromImage(Image.createImage(this.getWidth()/3, this.getWidth()/3),false);  
                     URLImage  img = URLImage.createToStorage(enc, eee.getImg(), urlimg+eee.getImg());
                     if (eee.getQuantite()==0){

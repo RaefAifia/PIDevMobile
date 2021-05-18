@@ -3,74 +3,79 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gui;
+package com.mycompany.myapp.gui;
 
 import com.codename1.components.ImageViewer;
 import com.codename1.components.ScaleImageLabel;
 import com.codename1.components.SpanLabel;
-import com.codename1.notifications.LocalNotification;
 import com.codename1.ui.Button;
 import com.codename1.ui.ButtonGroup;
 import com.codename1.ui.Component;
 import static com.codename1.ui.Component.BOTTOM;
 import static com.codename1.ui.Component.CENTER;
-import static com.codename1.ui.Component.LEFT;
 import static com.codename1.ui.Component.RIGHT;
 import com.codename1.ui.Container;
 import com.codename1.ui.Display;
 import com.codename1.ui.EncodedImage;
+import com.codename1.ui.Font;
+import com.codename1.ui.FontImage;
 import com.codename1.ui.Form;
 import com.codename1.ui.Graphics;
 import com.codename1.ui.Image;
 import com.codename1.ui.Label;
 import com.codename1.ui.RadioButton;
+import com.codename1.ui.Slider;
 import com.codename1.ui.Tabs;
 import com.codename1.ui.TextArea;
 import com.codename1.ui.Toolbar;
 import com.codename1.ui.URLImage;
+import com.codename1.ui.geom.Dimension;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
+import com.codename1.ui.layouts.GridLayout;
 import com.codename1.ui.layouts.LayeredLayout;
+import com.codename1.ui.plaf.Border;
 import com.codename1.ui.plaf.Style;
 import com.codename1.ui.util.Resources;
-import entities.Offre;
-import service.OffreService;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
+import entities.Oeuvre;
 
 
-public class MesOffres extends BaseForm {
-    Form f;
-
-    Container cn1;
-    ImageViewer iv;
+/**
+ *
+ * @author pc
+ */
+public class DetailOeuvreVend extends BaseForm{
+  Label comments ;
+       RatingOService r = new RatingOService();
+       int i = UserService.getCurrentUser().getUser_id();
+RatingO rtest = new RatingO();
+Container cnt1;
+ Form f1;
+    Form detaille;
    
-    Label lblnomeve;
-    Label nomeve;
-    Label promo;
-     EncodedImage enc;
-     String urlimg = "http://localhost/PI/IMG/";
-    public MesOffres(Form previous, Resources res) {  
-super("Mes offres", BoxLayout.y());
+    String urlimg = "http://localhost/PIDevWEB/public/PI/IMG/";
+     public  DetailOeuvreVend(Form previous, Resources res , Oeuvre o) 
+     {  
+super("détail d'oeuvre", BoxLayout.y());
 Toolbar tb = new Toolbar(true);  
         setToolbar(tb);
        // getTitleArea().setUIID("Container");
         //setTitle("Liste des oeuvres");
         getContentPane().setScrollVisible(false);
         
-    super.addSideMenu(res);
-      tb.addSearchCommand(e -> {});
-        
+     super.addSideMenu(res);
         Tabs swipe = new Tabs();
-
         Label spacer1 = new Label();
         Label spacer2 = new Label();
-       addTab(swipe, res.getImage("news-item.jpg"), spacer1, " Mes offres");
-        
-                
+       addTab(swipe, res.getImage("news-item.jpg"), spacer1, " détail d'oeuvre");
         swipe.setUIID("Container");
         swipe.getContentPane().setUIID("Container");
         swipe.hideTabs();
-        
         ButtonGroup bg = new ButtonGroup();
         int size = Display.getInstance().convertToPixels(1);
       Image unselectedWalkthru = Image.createImage(size, size, 0);
@@ -104,31 +109,56 @@ Toolbar tb = new Toolbar(true);
       Component.setSameSize(radioContainer, spacer1, spacer2);
         
    add(LayeredLayout.encloseIn(swipe, radioContainer));
-      
-        OffreService ME = new  OffreService();
-        for (Offre eee : ME.getmesOffres(17)) {
-            System.out.println(ME.getmesOffres(1).size());
-//               enc = EncodedImage.createFromImage(Image.createImage(this.getWidth()/3, this.getWidth()/3),false);  
-//                    URLImage  img = URLImage.createToStorage(enc, eee.getImg(), urlimg+eee.getImg());
-                  
-//            iv.setImage(img.scaled(400, 400));
-                addButton(previous, res , eee, eee.getNom(), eee.getDescription(), eee.getDate());
+   
+
+     //  cnt.setLeadComponent(image);
+       TextArea ta = new TextArea(o.getNom());
+       ta.setUIID("Label");
+       ta.setEditable(false);
+       Label desc = new Label(o.getDescription(), "Label");
+       Label domaine = new Label(o.getDoamine(), "Label");
+       Label likes = new Label(o.getPrix() + " DT ", "LabelPrix");
+       likes.setTextPosition(RIGHT);
+     ImageViewer iv = new ImageViewer();
+              EncodedImage   enc = EncodedImage.createFromImage(Image.createImage(this.getWidth(), this.getWidth()),false); 
+               URLImage  img = URLImage.createToStorage(enc, o.getImg(), " http://localhost/PIDevWEB/public/PI/IMG/"+o.getImg());
+             iv.setImage(img.scaled(700, 700));
             
+               if (o.getQuantite()==0){
+                   comments = new Label("hors stock", "Label");
+               }
+               else {
+                   comments  = new Label(o.getQuantite()+" oeuvres", "Label");
+               }
+   
+add(iv);
+ cnt1 = 
+            LayeredLayout.encloseIn(
+                BoxLayout.encloseXCenter(
+                    BoxLayout.encloseY(
+                            new Label("    Nom : "),
+                            new Label("    Domaine : "),
+                            new Label("    Description : "),
+                            new Label("    Prix : "),
+                            new Label("    Quantité : ")
+                ),
+                    BoxLayout.encloseY(
+                          ta,
+                            domaine,
+                            desc,
+                           likes,
+                           comments
+                ))
+            );
+
+
+add(cnt1);
+        
+//}
+
+      }  
      
-      //  addButton(res.getImage("news-item-2.jpg"), "Fusce ornare cursus masspretium tortor integer placera.", true, 15, 21);
-        //addButton(res.getImage("news-item-3.jpg"), "Maecenas eu risus blanscelerisque massa non amcorpe.", false, 36, 15);
-       // addButton(res.getImage("news-item-4.jpg"), "Pellentesque non lorem diam. Proin at ex sollicia.", false, 11, 9);
-    }  }
-  
-    
-    private void updateArrowPosition(Button b, Label arrow) {
-        arrow.getUnselectedStyle().setMargin(LEFT, b.getX() + b.getWidth() / 2 - arrow.getWidth() / 2);
-        arrow.getParent().repaint();
-        
-        
-    }
-    
-private void addTab(Tabs swipe, Image img, Label spacer, String text) {
+     private void addTab(Tabs swipe, Image img, Label spacer, String text) {
         int size = Math.min(Display.getInstance().getDisplayWidth(), Display.getInstance().getDisplayHeight());
         if(img.getHeight() < size) {
             img = img.scaledHeight(size);
@@ -157,37 +187,6 @@ private void addTab(Tabs swipe, Image img, Label spacer, String text) {
 
         swipe.addTab("", page1);
     }
-    
- private void addButton(Form previous, Resources res ,Offre o , String nom ,  String description , String date) {
-     
-     int height = Display.getInstance().convertToPixels(20f);
-       int width = Display.getInstance().convertToPixels(14f);
-       TextArea ta = new TextArea(nom);
-       ta.setUIID("NewsTopLine");
-       ta.setEditable(false);
-       Label desc = new Label(description, "Label");
-       Label dat = new Label(date , "Label");
-       Label dead = new Label("deadline : ", "LabelPrix");
-       dat.setTextPosition(RIGHT);
-       Button image = new Button(res.getImage("news-item.jpg"));
-        image.setUIID("Label");
-        Container cnt = BorderLayout.west(image);  
-        cnt.add(BorderLayout.EAST, 
-                BoxLayout.encloseY(
-                   ta,
-                   desc,
-                   
-                          BoxLayout.encloseX(dead, 
-                   dat)
-                      ));
-   
-     
-       add(cnt);
-       image.addActionListener( e -> 
-               new DetailOffre(previous, res, o).show()
-       );
-      
-   }
-   
-}
+    }
+ 
 

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gui;
+package com.mycompany.myapp.gui;
 
 import com.codename1.components.ImageViewer;
 import com.codename1.components.ScaleImageLabel;
@@ -44,24 +44,27 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
-import entities.Offre;
+import entities.Oeuvre;
 import entities.RatingO;
 
 import service.FavorisOService;
-import service.OffreService;
 import service.RatingOService;
 
 /**
  *
  * @author pc
  */
-public class DetailOffre extends BaseForm{
+public class DetailOeuvre extends BaseForm{
     Label comments ;
-       Form detaille;
-
+       RatingOService r = new RatingOService();
+        int i = UserService.getCurrentUser().getUser_id();
+RatingO rtest = new RatingO();
 Container cnt1;
-
-     public DetailOffre(Form previous, Resources res , Offre o) 
+ Form f1;
+    Form detaille;
+   
+    String urlimg = "http://localhost/PIDevWEB/public/PI/IMG/";
+     public DetailOeuvre(Form previous, Resources res , Oeuvre o) 
      {  
 super("détail d'oeuvre", BoxLayout.y());
 Toolbar tb = new Toolbar(true);  
@@ -70,7 +73,7 @@ Toolbar tb = new Toolbar(true);
         //setTitle("Liste des oeuvres");
         getContentPane().setScrollVisible(false);
         
-    // super.addSideMenu(res);
+     super.addSideMenu(res);
         Tabs swipe = new Tabs();
         Label spacer1 = new Label();
         Label spacer2 = new Label();
@@ -111,7 +114,36 @@ Toolbar tb = new Toolbar(true);
       Component.setSameSize(radioContainer, spacer1, spacer2);
         
    add(LayeredLayout.encloseIn(swipe, radioContainer));
-
+    ButtonGroup barGroup = new ButtonGroup();
+        RadioButton mesliste = RadioButton.createToggle("les oeuvres", barGroup);
+        mesliste.setUIID("SelectBar");
+        RadioButton mesfavoris = RadioButton.createToggle(" mes favoris ", barGroup);
+         mesfavoris.setUIID("SelectBar");
+        RadioButton monpanier = RadioButton.createToggle("voir panier", barGroup);
+        monpanier.setUIID("SelectBar");
+       
+       Label arrow = new Label(res.getImage("news-tab-down-arrow.png"), "Container");
+//       mesliste.addActionListener((e)-> {
+//           InfiniteProgress ip = new InfiniteProgress();
+//           final Dialog ipDlg = ip.showInifiniteBlocking();
+//           refreshTheme();
+//       });
+//       
+       add(LayeredLayout.encloseIn(
+                GridLayout.encloseIn(3, mesliste, mesfavoris, monpanier)
+             
+        ));
+        
+        mesliste.setSelected(true);
+        
+        addShowListener(e -> {
+     
+       
+        });
+        bindButtonSelection1(previous, res,mesliste, arrow);
+        bindButtonSelection2(previous, res, mesfavoris, arrow);
+        bindButtonSelection3(previous, res, monpanier, arrow);
+        
 //       
  int height = Display.getInstance().convertToPixels(20f);
        int width = Display.getInstance().convertToPixels(14f);
@@ -128,129 +160,107 @@ Toolbar tb = new Toolbar(true);
        ta.setUIID("Label");
        ta.setEditable(false);
        Label desc = new Label(o.getDescription(), "Label");
-       Label dat = new Label(o.getDate() , "Label");
-      
-  
+       Label domaine = new Label(o.getDoamine(), "Label");
+       Label likes = new Label(o.getPrix() + " DT ", "LabelPrix");
+       likes.setTextPosition(RIGHT);
+     ImageViewer iv = new ImageViewer();
+              EncodedImage   enc = EncodedImage.createFromImage(Image.createImage(this.getWidth(), this.getWidth()),false); 
+               URLImage  img = URLImage.createToStorage(enc, o.getImg(), " http://localhost/PIDevWEB/public/PI/IMG/"+o.getImg());
+             iv.setImage(img.scaled(700, 700));
+            
+               if (o.getQuantite()==0){
+                   comments = new Label("hors stock", "Label");
+               }
+               else {
+                   comments  = new Label(o.getQuantite()+" oeuvres", "Label");
+               }
+   FavorisOService f = new FavorisOService();
+Button b= new Button("  ","ButtonF");
+Oeuvre test = new Oeuvre();
+FavorisOService.getInstance().isfav(o, i, test);
+     
+       Style s = new Style(b.getUnselectedStyle());
+       Style s1 = new Style(b.getUnselectedStyle());
+           s.setFgColor(0xff2d32);
+          s1.setFgColor(0xc3C0C0);
+ if(test.getOeuvrage_id()==0) {
+            FontImage heartImage = FontImage.createMaterial(FontImage.MATERIAL_FAVORITE, s1);
+     b.setIcon(heartImage);
+ } else {
+     FontImage heartImage = FontImage.createMaterial(FontImage.MATERIAL_FAVORITE, s);
+     b.setIcon(heartImage);
+ }
+  b.addActionListener( e -> {
+     FavorisOService.getInstance().isfav(o, i, test);
+        
+    
+     if(test.getOeuvrage_id()==0) {
+          // FontImage.setMaterialIcon(b, FontImage.MATERIAL_FAVORITE);
+            FavorisOService.getInstance().ajoutFAv(o,i);
+            FontImage heartImage = FontImage.createMaterial(FontImage.MATERIAL_FAVORITE, s);
+           b.setIcon(heartImage);
+ } else {   
+         FavorisOService.getInstance().suppFAv(o,1);
+          FontImage heartImage = FontImage.createMaterial(FontImage.MATERIAL_FAVORITE, s1);
+           b.setIcon(heartImage);
+ } 
+ });
+
+Container cntF = new Container(BoxLayout.xRight());
+cntF.add(b);
+add(cntF);   
+add(iv);
  cnt1 = 
             LayeredLayout.encloseIn(
                 BoxLayout.encloseXCenter(
                     BoxLayout.encloseY(
                             new Label("    Nom : "),
+                            new Label("    Domaine : "),
                             new Label("    Description : "),
-                           new Label("    Date : ")
-                            
+                            new Label("    Prix : "),
+                            new Label("    Quantité : ")
                 ),
                     BoxLayout.encloseY(
                           ta,
+                            domaine,
                             desc,
-                        dat
+                           likes,
+                           comments
                 ))
             );
-         
-String data = "Offre Special \n "+o.getNom()+"\n"+o.getDescription()+"\n Veuillez en profiter avant : \n"+o.getDate() ;
-int sizecode = 300;
-Button breclam = new Button("utiliser cet offre");
-breclam.addActionListener( e -> {
-              
-       
 
-        // encode
-        BitMatrix bitMatrix = generateMatrix(data, sizecode);
-     
-        // write in a file
-        Image qr = getImageFromBitMatrix(300, 300, bitMatrix);
-        ImageViewer qv = new ImageViewer();
-        qv.setImage(qr);
-            System.out.println("laaaaaaa"+qr.toString());
-            //Image a = new Image (res.getImage("dog.jpg"));   
-         int sizer = Math.min(Display.getInstance().getDisplayWidth(), Display.getInstance().getDisplayHeight());
-        Image img = res.getImage("dog.jpg");
-        if(img.getHeight() < sizer) {
-            img = img.scaledHeight(sizer);
-        }
-        if(img.getHeight() > Display.getInstance().getDisplayHeight()) {
-            img = img.scaledHeight(Display.getInstance().getDisplayHeight());
-        }
-        ScaleImageLabel image = new ScaleImageLabel(img);
-        image.setUIID("Container");
-        image.setBackgroundType(Style.BACKGROUND_IMAGE_SCALED_FILL);
-        Label nom = new Label(o.getNom(), "PrixLabel");
-        Label des = new Label(o.getDescription()+"   ", "NewsTopLine");
-        Label det = new Label("Valable jusqu'à", "Label");
-        Label overlay = new Label(o.getDate(), "Label");
-         
-        
-        Container page2 = 
-            LayeredLayout.encloseIn(
-                
-                
-                    BoxLayout.encloseY(
-                            new Label(" "),
-                             new Label(""),
-                            new Label(" "),
-                             new Label(""),
-                             new Label(""),
-                             new Label("")         
-                ),
-                    BoxLayout.encloseY(
-                            new Label(" "),
-                             new Label(""),
-                            new Label(" "),
-                             new Label(""),
-                             new Label(""),
-                             new Label("")
-                )
-            );
-      
-         
-        Container page1 = 
-            LayeredLayout.encloseIn(
-                 image,
-                  BorderLayout.east(BoxLayout.encloseY(
-               
-                          
-                          new Label(""),
-                          new Label(""),
-                          new Label(""),
-                          new Label(""),
-                          new Label(""),
-                          new Label(""),
-                          nom,
-                         BoxLayout.encloseX(des , new Label(""))
-                )),
-                BorderLayout.south(
-                     BoxLayout.encloseXRight( 
-                              BoxLayout.encloseY(
-                             new Label(""),
-                             new Label(""),
-                             new Label(""),
-                             new Label(""),
-                             new Label(""),
-                             new Label(""),
-                             new Label(""),
-                             new Label(""),
-                             new Label(""),
-                             new Label(""),
-                               det,
-                               overlay),
-                     BoxLayout.encloseY(
-                             new Label(qr),
-                              new Label(""),
-                             new Label(""),
-                             new Label(""),
-                             new Label("")
-                         ) ))
-            );
-        detaille = new Form();
-        detaille.add(page2);
-          detaille.add(page1);
-            detaille.show();
-}
-       );
+
+/// ********************
+
+
+
+ 
+ 
+    // ServiceRating serv = new ServiceRating();
+           
+           
+
+ RatingOService.getInstance().israte(o, i, rtest);
+ int value = (int)rtest.getNote();             
+ if (value!=-1)
+                    showStarPickingForm(this,value, o);
+                    else
+                    showStarPickingForm(this,0, o);
+//               
+//            });
+//            detaille.getToolbar().addCommandToRightBar("back", null, (ev) -> {
+//                f.show();
+//            });
+            
+
+
+// raef
+Button breclam = new Button("Ajouter au panier");
 
 
 add(cnt1);
-add(breclam);
+         add(breclam);
+//}
 
       }  
      
@@ -284,7 +294,91 @@ add(breclam);
         swipe.addTab("", page1);
     }
     
+    private void bindButtonSelection1(Form previous,Resources res, Button b, Label arrow) {
+       b.addActionListener(e -> {
+            if(b.isSelected()) {
+              
+                 new ListOeuvre(previous, res).show();
+            }
+        });
+    }
+      
+    private void bindButtonSelection2(Form previous,Resources res, Button b, Label arrow) {
+       b.addActionListener(e -> {
+            if(b.isSelected()) {
+              
+                new ListeFavoris(previous, res).show();
+            }
+        });
+    }
+    
+    private void bindButtonSelection3(Form previous,Resources res, Button b, Label arrow) {
+       b.addActionListener(e -> {
+            if(b.isSelected()) {
+            }
+        });
+    }
+    // ******************** 
+    
+    private void initStarRankStyle(Style s, Image star) {
+        s.setBackgroundType(Style.BACKGROUND_IMAGE_TILE_BOTH);
+        s.setBorder(Border.createEmpty());
+        s.setBgImage(star);
+        s.setBgTransparency(0);
+    }
+    
+    private Slider createStarRankSlider(int v, Oeuvre o) {
+        Slider starRank = new Slider();
+        starRank.setEditable(true);
+        starRank.setMinValue(0);
+        starRank.setMaxValue(5);
+        Font fnt = Font.createTrueTypeFont("native:MainLight", "native:MainLight").
+                derive(Display.getInstance().convertToPixels(5, true), Font.STYLE_PLAIN);
+        Style s = new Style(0xffff33, 0, fnt, (byte) 0);
+        Image fullStar = FontImage.createMaterial(FontImage.MATERIAL_STAR, s).toImage();
+        s.setOpacity(100);
+        s.setFgColor(2);
+        Image emptyStar = FontImage.createMaterial(FontImage.MATERIAL_STAR, s).toImage();
+        initStarRankStyle(starRank.getSliderEmptySelectedStyle(), emptyStar);
+        initStarRankStyle(starRank.getSliderEmptyUnselectedStyle(), emptyStar);
+        initStarRankStyle(starRank.getSliderFullSelectedStyle(), fullStar);
+        initStarRankStyle(starRank.getSliderFullUnselectedStyle(), fullStar);
+        starRank.setPreferredSize(new Dimension(fullStar.getWidth() * 5, fullStar.getHeight()));
+        if (v!=-1)
+        {
+            starRank.setProgress(v);
+           // starRank.setEditable(false);
+           
+        }
+        else starRank.setEditable(true);
+        starRank.addActionListener(e -> {
+        RatingOService.getInstance().israte(o, i, rtest);
+      int value = (int)rtest.getNote();             
+    if (value!=-1)
+        {
+//           
+            System.out.println(starRank.getProgress());
+            r.modifiernote(o, i,starRank.getProgress());
+            
+            
+            
+       //*******************
+       
+        }
+              else {
+            System.out.println(starRank.getProgress());
+                r.ajoutnote(o,i,starRank.getProgress());
+              }
 
+        });
+        return starRank;
+    }
+    private void showStarPickingForm(Form f,int v, Oeuvre o) {
+        f.add(FlowLayout.encloseCenter(createStarRankSlider(v, o)));
+    
+
+    }
+    
     
     
     //***********************
