@@ -57,10 +57,10 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import service.CommandeService;
+import services.CommandeService;
 import service.OeuvrageService;
-import service.PanierService;
-import service.PanierTempService;
+import services.PanierService;
+import services.PanierTempService;
 import utils.Statics;
 
 /**
