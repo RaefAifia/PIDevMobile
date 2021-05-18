@@ -231,6 +231,7 @@ public ArrayList<User> Users;
          User u = new User();
         String url = Statics.BASE_URL+"/user/confirmEmail/"+id;
         req.setUrl(url);
+        System.out.println(url);
         req.setPost(false);
         req.addResponseListener((evt) -> {
         {
@@ -247,7 +248,7 @@ public ArrayList<User> Users;
                 u.setUsername(Use.get("username").toString());
                 u.setEmail(Use.get("email").toString());
                 u.setPassword(Use.get("password").toString());
-                u.setBio(Use.get("bio").toString());
+                //u.setBio(Use.get("bio").toString());
                 u.setImage(Use.get("image").toString());
                 String x=(String) Use.get("mailconfirme");
                 if(x.equals("false")){
