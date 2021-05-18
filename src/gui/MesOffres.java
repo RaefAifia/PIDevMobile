@@ -38,7 +38,7 @@ import entities.Offre;
 import service.OffreService;
 
 
-public class MesOffres extends Form {
+public class MesOffres extends BaseForm {
     Form f;
 
     Container cn1;
@@ -57,7 +57,7 @@ Toolbar tb = new Toolbar(true);
         //setTitle("Liste des oeuvres");
         getContentPane().setScrollVisible(false);
         
-    // super.addSideMenu(res);
+    super.addSideMenu(res);
       tb.addSearchCommand(e -> {});
         
         Tabs swipe = new Tabs();

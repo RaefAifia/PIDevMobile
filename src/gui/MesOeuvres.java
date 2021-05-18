@@ -43,7 +43,7 @@ import service.OeuvrageService;
  *
  * @author pc
  */
-public class MesOeuvres extends Form {
+public class MesOeuvres extends BaseForm {
     Form f;
 
     Container cn1;
@@ -62,7 +62,7 @@ Toolbar tb = new Toolbar(true);
         //setTitle("Liste des oeuvres");
         getContentPane().setScrollVisible(false);
         
-    // super.addSideMenu(res);
+    super.addSideMenu(res);
       tb.addSearchCommand(e -> {});
         
         Tabs swipe = new Tabs();

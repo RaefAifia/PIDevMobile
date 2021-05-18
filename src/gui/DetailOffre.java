@@ -55,7 +55,7 @@ import service.RatingOService;
  *
  * @author pc
  */
-public class DetailOffre extends Form{
+public class DetailOffre extends BaseForm{
     Label comments ;
        Form detaille;
 

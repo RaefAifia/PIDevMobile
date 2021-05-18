@@ -42,7 +42,7 @@ import service.OeuvrageService;
  *
  * @author pc
  */
-public class ListeFavoris extends Form {
+public class ListeFavoris extends BaseForm {
      Form f;
 
     Container cn1;
@@ -61,7 +61,7 @@ Toolbar tb = new Toolbar(true);
         //setTitle("Liste des oeuvres");
         getContentPane().setScrollVisible(false);
         
-    // super.addSideMenu(res);
+    super.addSideMenu(res);
       tb.addSearchCommand(e -> {});
         
         Tabs swipe = new Tabs();

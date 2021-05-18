@@ -54,7 +54,7 @@ import service.RatingOService;
  *
  * @author pc
  */
-public class DetailOeuvre extends Form{
+public class DetailOeuvre extends BaseForm{
     Label comments ;
        RatingOService r = new RatingOService();
 RatingO rtest = new RatingO();
@@ -72,7 +72,7 @@ Toolbar tb = new Toolbar(true);
         //setTitle("Liste des oeuvres");
         getContentPane().setScrollVisible(false);
         
-    // super.addSideMenu(res);
+     super.addSideMenu(res);
         Tabs swipe = new Tabs();
         Label spacer1 = new Label();
         Label spacer2 = new Label();
