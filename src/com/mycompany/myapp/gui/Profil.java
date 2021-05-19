@@ -52,7 +52,7 @@ public class Profil extends BaseForm {
          
         ImageViewer img1 = new ImageViewer();
         EncodedImage placeholder = EncodedImage.createFromImage(Image.createImage(this.getWidth()/3, this.getWidth()/3),false);
-        URLImage urlImage = URLImage.createToStorage(placeholder, u.getImage(), "http://localhost/pi_symfony/public/images/profil/"+u.getImage());
+        URLImage urlImage = URLImage.createToStorage(placeholder, u.getImage(), "http://localhost/PIDevWEB-main/public/PI/IMG/"+u.getImage());
          System.out.println(urlImage);  
         Image img = res.getImage("8.jpg");
         if(img.getHeight() > Display.getInstance().getDisplayHeight() / 3) {

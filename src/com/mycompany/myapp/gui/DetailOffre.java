@@ -44,7 +44,8 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
-import entities.Offre;
+import com.mycompany.myapp.entities.Offre;
+import com.mycompany.myapp.services.UserService;
 
 
 /**
@@ -54,7 +55,7 @@ import entities.Offre;
 public class DetailOffre extends BaseForm{
     Label comments ;
        Form detaille;
-int i = UserService.getCurrentUser().getUser_id();
+String i = UserService.getCurrentUser().getUsername();
 Container cnt1;
 
      public DetailOffre(Form previous, Resources res , Offre o) 
@@ -143,7 +144,7 @@ Toolbar tb = new Toolbar(true);
                 ))
             );
          
-String data = "Monsieur/Madame :"+i.getNom()+"\n a gagné l'offre "+o.getNom()+"\n"+o.getDescription()+"\n Veuillez en profiter avant : \n"+o.getDate() ;
+String data = "Monsieur/Madame :"+i+"\n a gagné l'offre "+o.getNom()+"\n"+o.getDescription()+"\n Veuillez en profiter avant : \n"+o.getDate() ;
 int sizecode = 300;
 Button breclam = new Button("utiliser cet offre");
 breclam.addActionListener( e -> {

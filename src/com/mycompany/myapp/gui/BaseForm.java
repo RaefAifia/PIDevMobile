@@ -44,7 +44,7 @@ import com.mycompany.myapp.services.UserService;
  * @author Shai Almog
  */
 public class BaseForm extends Form {
-
+Form forme;
     public BaseForm() {
     }
 
@@ -78,7 +78,7 @@ public class BaseForm extends Form {
          
          ImageViewer img1 = new ImageViewer();
             EncodedImage placeholder = EncodedImage.createFromImage(Image.createImage(this.getWidth()/3, this.getWidth()/3),false);
-            URLImage urlImage = URLImage.createToStorage(placeholder, u.getImage(), "http://localhost/pi_symfony/public/images/profil/"+u.getImage());
+            URLImage urlImage = URLImage.createToStorage(placeholder, u.getImage(), "http://localhost/PIDevWEB-main/public/PI/IMG/"+u.getImage());
          
         if(img.getHeight() > Display.getInstance().getDisplayHeight() / 3) {
             img = img.scaledHeight(Display.getInstance().getDisplayHeight() / 3);
@@ -93,11 +93,17 @@ public class BaseForm extends Form {
                         new Label(urlImage, ""))
         ));
         
-       // tb.addMaterialCommandToSideMenu("Newsfeed", FontImage.MATERIAL_UPDATE, e -> new NewsfeedForm(res).show());
+       
         tb.addMaterialCommandToSideMenu("Profile", FontImage.MATERIAL_SETTINGS, e -> new Profil(UserService.getCurrentUser(),res).show());
         Form f =  new Form() ;
         tb.addMaterialCommandToSideMenu("Nos artistes", FontImage.MATERIAL_SETTINGS, e -> new Nosartistes(f , res).show());
         tb.addMaterialCommandToSideMenu("Logout", FontImage.MATERIAL_EXIT_TO_APP, e -> new login(res).show());
+         tb.addMaterialCommandToSideMenu("Formation", FontImage.MATERIAL_UPDATE, e -> new afficher(forme,res).show());
+        
+         tb.addMaterialCommandToSideMenu("Oeuvres", FontImage.MATERIAL_UPDATE, e -> new ListOeuvre(f,res).show());
+       tb.addMaterialCommandToSideMenu("Mes Oeuvres", FontImage.MATERIAL_SETTINGS, e -> new MesOeuvres(f,res).show());
+        tb.addMaterialCommandToSideMenu("Mes Offres", FontImage.MATERIAL_EXIT_TO_APP, e -> new MesOffres(f,res).show());
         tb.addMaterialCommandToSideMenu("mes réclamations", FontImage.MATERIAL_EXIT_TO_APP, e -> new Reclamations(f,res).show());
+        
     }
 }

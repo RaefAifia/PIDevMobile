@@ -42,7 +42,10 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
-import entities.Oeuvre;
+import com.mycompany.myapp.entities.Oeuvre;
+import com.mycompany.myapp.entities.RatingO;
+import com.mycompany.myapp.services.RatingOService;
+import com.mycompany.myapp.services.UserService;
 
 
 /**
@@ -58,7 +61,7 @@ Container cnt1;
  Form f1;
     Form detaille;
    
-    String urlimg = "http://localhost/PIDevWEB/public/PI/IMG/";
+    String urlimg = "http://localhost/PIDevWEB-main/public/PI/IMG/";
      public  DetailOeuvreVend(Form previous, Resources res , Oeuvre o) 
      {  
 super("détail d'oeuvre", BoxLayout.y());
@@ -121,7 +124,7 @@ Toolbar tb = new Toolbar(true);
        likes.setTextPosition(RIGHT);
      ImageViewer iv = new ImageViewer();
               EncodedImage   enc = EncodedImage.createFromImage(Image.createImage(this.getWidth(), this.getWidth()),false); 
-               URLImage  img = URLImage.createToStorage(enc, o.getImg(), " http://localhost/PIDevWEB/public/PI/IMG/"+o.getImg());
+               URLImage  img = URLImage.createToStorage(enc, o.getImg(), "http://localhost/PIDevWEB-main/public/PI/IMG/"+o.getImg());
              iv.setImage(img.scaled(700, 700));
             
                if (o.getQuantite()==0){

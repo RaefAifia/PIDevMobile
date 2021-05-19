@@ -3,16 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package services;
+package com.mycompany.myapp.services;
 
 import com.codename1.io.CharArrayReader;
 import com.codename1.io.ConnectionRequest;
 import com.codename1.io.JSONParser;
 import com.codename1.io.NetworkManager;
-import entities.Commande;
-import entities.Oeuvre;
-import entities.Panier;
-import entities.PanierTemp;
+import com.mycompany.myapp.entities.Commande;
+import com.mycompany.myapp.entities.Oeuvre;
+import com.mycompany.myapp.entities.Panier;
+import com.mycompany.myapp.entities.PanierTemp;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

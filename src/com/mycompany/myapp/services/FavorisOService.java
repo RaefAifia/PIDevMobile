@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package service;
+package com.mycompany.myapp.services;
 
 import com.codename1.io.CharArrayReader;
 import com.codename1.io.ConnectionRequest;
@@ -11,7 +11,7 @@ import com.codename1.io.JSONParser;
 import com.codename1.io.NetworkEvent;
 import com.codename1.io.NetworkManager;
 import com.codename1.ui.events.ActionListener;
-import entities.Oeuvre;
+import com.mycompany.myapp.entities.Oeuvre;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -70,7 +70,7 @@ public class FavorisOService {
       
    public ArrayList<Oeuvre> getListFOeuvres(int id){       
         ConnectionRequest con = new ConnectionRequest();
-    String url = Statics.BASE_URL+"/favoris/o/mobile/index?user_id="+id;
+    String url = Statics.BASE_URL+"favoris/o/mobile/index?user_id="+id;
      con.setUrl(url);
            con.addResponseListener(new ActionListener<NetworkEvent>() {
             @Override
@@ -85,7 +85,7 @@ public class FavorisOService {
 
   public boolean ajoutFAv(Oeuvre ta, int id) {
         ConnectionRequest con = new ConnectionRequest();
-       String url = Statics.BASE_URL+"/favoris/o/aa/listO/favoris/new?oeuvrage_id="+ta.getOeuvrage_id()+"&user_id="+id;
+       String url = Statics.BASE_URL+"favoris/o/aa/listO/favoris/new?oeuvrage_id="+ta.getOeuvrage_id()+"&user_id="+id;
        
        System.out.println(url);
          con.setUrl(url);// Insertion de l'URL de notre demande de connexion
@@ -101,7 +101,7 @@ public class FavorisOService {
 }
   public boolean suppFAv(Oeuvre ta, int id) {
         ConnectionRequest con = new ConnectionRequest();
-       String url = Statics.BASE_URL+"/favoris/o/aa/listO/favoris/delete?oeuvrage_id="+ta.getOeuvrage_id()+"&user_id="+id;
+       String url = Statics.BASE_URL+"favoris/o/aa/listO/favoris/delete?oeuvrage_id="+ta.getOeuvrage_id()+"&user_id="+id;
        System.out.println(url);
          con.setUrl(url);// Insertion de l'URL de notre demande de connexion
         con.addResponseListener(new ActionListener<NetworkEvent>() {
@@ -118,7 +118,7 @@ public class FavorisOService {
 public void isfav (Oeuvre ta, int id , Oeuvre test){
    
      ConnectionRequest con = new ConnectionRequest();
-       String url = Statics.BASE_URL+"/favoris/o/aa/listO/favoris?oeuvrage_id="+ta.getOeuvrage_id()+"&user_id="+id;
+       String url = Statics.BASE_URL+"favoris/o/aa/listO/favoris?oeuvrage_id="+ta.getOeuvrage_id()+"&user_id="+id;
        System.out.println(url);
          con.setUrl(url);// Insertion de l'URL de notre demande de connexion
         con.addResponseListener((et)->{

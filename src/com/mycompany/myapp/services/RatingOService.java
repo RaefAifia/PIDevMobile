@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package service;
+package com.mycompany.myapp.services;
 
 import com.codename1.io.CharArrayReader;
 import com.codename1.io.ConnectionRequest;
@@ -11,8 +11,8 @@ import com.codename1.io.JSONParser;
 import com.codename1.io.NetworkEvent;
 import com.codename1.io.NetworkManager;
 import com.codename1.ui.events.ActionListener;
-import entities.Oeuvre;
-import entities.RatingO;
+import com.mycompany.myapp.entities.Oeuvre;
+import com.mycompany.myapp.entities.RatingO;
 import java.io.IOException;
 import java.util.Map;
 import utils.Statics;
@@ -34,7 +34,7 @@ public class RatingOService {
     
     public void israte (Oeuvre ta, int id , RatingO test){
      ConnectionRequest con = new ConnectionRequest();
-       String url = Statics.BASE_URL+"/rating/oeuvre/israte?oeuvrage_id="+ta.getOeuvrage_id()+"&user_id="+id;
+       String url = Statics.BASE_URL+"rating/oeuvre/israte?oeuvrage_id="+ta.getOeuvrage_id()+"&user_id="+id;
        System.out.println(url);
          con.setUrl(url);// Insertion de l'URL de notre demande de connexion
         con.addResponseListener((et)->{
@@ -57,7 +57,7 @@ public class RatingOService {
     
      public boolean ajoutnote(Oeuvre ta, int id,int v) {
         ConnectionRequest con = new ConnectionRequest();
-       String url = Statics.BASE_URL+"/rating/oeuvre/new?oeuvrage_id="+ta.getOeuvrage_id()+"&user_id="+id+"&note="+v;
+       String url = Statics.BASE_URL+"rating/oeuvre/new?oeuvrage_id="+ta.getOeuvrage_id()+"&user_id="+id+"&note="+v;
        
        System.out.println(url);
          con.setUrl(url);// Insertion de l'URL de notre demande de connexion
@@ -74,7 +74,7 @@ public class RatingOService {
 }
        public boolean modifiernote(Oeuvre ta, int id,int v) {
         ConnectionRequest con = new ConnectionRequest();
-       String url = Statics.BASE_URL+"/rating/oeuvre/edit?oeuvrage_id="+ta.getOeuvrage_id()+"&user_id="+id+"&note="+v;
+       String url = Statics.BASE_URL+"rating/oeuvre/edit?oeuvrage_id="+ta.getOeuvrage_id()+"&user_id="+id+"&note="+v;
        
        System.out.println(url);
          con.setUrl(url);// Insertion de l'URL de notre demande de connexion

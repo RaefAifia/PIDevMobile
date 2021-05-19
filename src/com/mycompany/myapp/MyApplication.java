@@ -18,7 +18,6 @@ import com.mycompany.myapp.gui.SignUp;
 import com.mycompany.myapp.gui.HomeForm;
 import com.mycompany.myapp.gui.Nosartistes;
 import com.mycompany.myapp.gui.Reclamations;
-
 import com.mycompany.myapp.gui.login;
 
 /**

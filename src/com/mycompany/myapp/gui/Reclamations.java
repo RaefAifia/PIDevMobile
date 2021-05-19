@@ -70,7 +70,7 @@ public class Reclamations extends BaseForm {
     Label nomeve;
     Label promo;
      EncodedImage enc;
-     String urlimg = "http://localhost/pi_symfony/public/images/profil/";
+     String urlimg = "http://localhost/PIDevWEB-main/public/PI/IMG/";
     public Reclamations(Form previous, Resources res) {  
         super("Newsfeed", BoxLayout.y());
         Toolbar tb = new Toolbar(true);

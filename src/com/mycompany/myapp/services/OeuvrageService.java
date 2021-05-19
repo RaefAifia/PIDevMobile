@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package service;
+package com.mycompany.myapp.services;
 
 import com.codename1.io.CharArrayReader;
 import com.codename1.io.ConnectionRequest;
@@ -11,7 +11,7 @@ import com.codename1.io.JSONParser;
 import com.codename1.io.NetworkEvent;
 import com.codename1.io.NetworkManager;
 import com.codename1.ui.events.ActionListener;
-import entities.Oeuvre;
+import com.mycompany.myapp.entities.Oeuvre;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +68,7 @@ public class OeuvrageService {
 
    public ArrayList<Oeuvre> getListOeuvres(){       
         ConnectionRequest con = new ConnectionRequest();
-    String url = Statics.BASE_URL+"/oeuvrage/aa/listO";
+    String url = Statics.BASE_URL+"oeuvrage/aa/listO";
      con.setUrl(url);
            con.addResponseListener(new ActionListener<NetworkEvent>() {
             @Override
@@ -114,7 +114,7 @@ public class OeuvrageService {
 
    public ArrayList<Oeuvre> getmesOeuvres(int id){       
         ConnectionRequest con = new ConnectionRequest();
-    String url = Statics.BASE_URL+"/oeuvrage/aa/listO/vendor?user_id="+id;
+    String url = Statics.BASE_URL+"oeuvrage/aa/listO/vendor?user_id="+id;
      con.setUrl(url);
            con.addResponseListener(new ActionListener<NetworkEvent>() {
             @Override

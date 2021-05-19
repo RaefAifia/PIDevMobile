@@ -3,20 +3,29 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gui;
+package com.mycompany.myapp.gui;
 
 import com.codename1.components.ImageViewer;
 import com.codename1.components.InfiniteProgress;
-import com.codename1.components.MultiButton;
 import com.codename1.components.ScaleImageLabel;
+import com.codename1.ext.filechooser.FileChooser;
 import com.codename1.components.SpanLabel;
+import com.codename1.components.ToastBar;
+import com.codename1.io.FileSystemStorage;
+import com.codename1.io.Log;
+import com.codename1.io.Util;
+import com.codename1.io.rest.Response;
+import com.codename1.io.rest.Rest;
+import com.codename1.ui.BrowserComponent;
 import com.codename1.ui.Button;
 import com.codename1.ui.ButtonGroup;
+import com.codename1.ui.Command;
 import com.codename1.ui.Component;
 import static com.codename1.ui.Component.BOTTOM;
 import static com.codename1.ui.Component.CENTER;
 import static com.codename1.ui.Component.LEFT;
 import static com.codename1.ui.Component.RIGHT;
+import static com.codename1.ui.Component.TOP;
 import com.codename1.ui.Container;
 import com.codename1.ui.Dialog;
 import com.codename1.ui.Display;
@@ -29,9 +38,11 @@ import com.codename1.ui.Label;
 import com.codename1.ui.RadioButton;
 import com.codename1.ui.Tabs;
 import com.codename1.ui.TextArea;
-import com.codename1.ui.TextField;
 import com.codename1.ui.Toolbar;
 import com.codename1.ui.URLImage;
+import com.codename1.ui.events.ActionEvent;
+import static com.codename1.ui.events.ActionEvent.Type.Response;
+import com.codename1.ui.events.ActionListener;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
@@ -39,34 +50,26 @@ import com.codename1.ui.layouts.GridLayout;
 import com.codename1.ui.layouts.LayeredLayout;
 import com.codename1.ui.plaf.Style;
 import com.codename1.ui.util.Resources;
-import com.codename1.ui.validation.LengthConstraint;
-import com.codename1.ui.validation.RegexConstraint;
-import com.codename1.ui.validation.Validator;
-import com.mycompany.myapp.MyApplication;
-import entities.Event;
-import entities.Oeuvre;
-<<<<<<< HEAD:src/gui/ListEventForm.java
-import entities.User_reservation;
-import service.Event_Service;
-import service.Reservation_Service;
-=======
-import entities.PanierTemp;
+import com.codename1.util.Base64;
+import com.mycompany.myapp.entities.Oeuvre;
+import com.mycompany.myapp.entities.Panier;
+import com.mycompany.myapp.entities.PanierTemp;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import services.CommandeService;
-import service.OeuvrageService;
-import services.PanierService;
-import services.PanierTempService;
+import com.mycompany.myapp.services.CommandeService;
+import com.mycompany.myapp.services.OeuvrageService;
+import com.mycompany.myapp.services.PanierService;
+import com.mycompany.myapp.services.PanierTempService;
+import com.mycompany.myapp.services.UserService;
 import utils.Statics;
->>>>>>> Gest-Panier:src/com/mycompany/myapp/gui/ListPan.java
 
 /**
  *
- * @author hp
+ * @author TBug
  */
-public class ListEventForm extends Form{ 
+public class ListPan extends Form{ 
     
  Form f;
 
@@ -75,12 +78,12 @@ public class ListEventForm extends Form{
     URLImage img;
     Label lblnomeve;
     Label nomeve;
-
-    Resources resq;
-    public ListEventForm(Form previous, Resources res) {  
-super("Liste des Event", BoxLayout.y());
-resq=res;
-Toolbar tb = new Toolbar(true);  
+    Label promo;
+     EncodedImage enc;
+     String urlimg = "http://localhost/PIDevWEB-main/public/PI/IMG/";
+    public ListPan(Form previous, Resources res) {  
+    super("Liste des favoris", BoxLayout.y());
+    Toolbar tb = new Toolbar(true);  
         setToolbar(tb);
        // getTitleArea().setUIID("Container");
         //setTitle("Liste des oeuvres");
@@ -93,7 +96,7 @@ Toolbar tb = new Toolbar(true);
 
         Label spacer1 = new Label();
         Label spacer2 = new Label();
-       addTab(swipe, res.getImage("news-item.jpg"), spacer1, " Liste des oeuvres");
+       addTab(swipe, res.getImage("news-item.jpg"), spacer1, " Panier");
         addTab(swipe, res.getImage("dog.jpg"), spacer2, "100 Likes  ");
                 
         swipe.setUIID("Container");
@@ -139,7 +142,7 @@ Toolbar tb = new Toolbar(true);
         mesliste.setUIID("SelectBar");
         RadioButton mesfavoris = RadioButton.createToggle(" mes favoris ", barGroup);
          mesfavoris.setUIID("SelectBar");
-        RadioButton monpanier = RadioButton.createToggle("voir panier", barGroup);
+        RadioButton monpanier = RadioButton.createToggle("panier", barGroup);
         monpanier.setUIID("SelectBar");
        
        Label arrow = new Label(res.getImage("news-tab-down-arrow.png"), "Container");
@@ -158,7 +161,7 @@ Toolbar tb = new Toolbar(true);
         arrow.setVisible(false);
         addShowListener(e -> {
        arrow.setVisible(true);
-        updateArrowPosition(mesliste, arrow);
+        updateArrowPosition(monpanier, arrow);
         });
         bindButtonSelection1(previous, res,mesliste, arrow);
         bindButtonSelection2(previous, res, mesfavoris, arrow);
@@ -167,60 +170,76 @@ Toolbar tb = new Toolbar(true);
 //        addOrientationListener(e -> {
 //          updateArrowPosition(barGroup.getRadioButton(barGroup.getSelectedIndex()), arrow);
 //        });
- 
-    
-    
-    
-    Toolbar.setGlobalToolbar(true);
-                  this.add(new InfiniteProgress());
-  Display.getInstance().scheduleBackgroundTask(() -> { 
-      Display.getInstance().callSerially(() -> { 
-                  this.removeAll();
-              for (Event c : new Event_Service().findAll()) {
-
-            this.add(addItem_Event(c));
-
-        }
-             
-            this.revalidate();
-      });
-             });
-          this.getToolbar().addSearchCommand(e -> {
-            String text = (String) e.getSource();
-            if (text == null || text.length() == 0) {
-                // clear search
-                for (Component cmp : this.getContentPane()) {
-                    cmp.setHidden(false);
-                    cmp.setVisible(true);
-                }
-                this.getContentPane().animateLayout(150);
-            } else {
-                text = text.toLowerCase();
-                for (Component cmp : this.getContentPane()) {
-                    MultiButton mb = (MultiButton) cmp;
-                    String line1 = mb.getTextLine1();
-                    String line2 = mb.getTextLine2();
-                    boolean show = line1 != null && line1.toLowerCase().indexOf(text) > -1
-                            || line2 != null && line2.toLowerCase().indexOf(text) > -1;
-                    mb.setHidden(!show);
-                    mb.setVisible(show);
-                }
-                this.getContentPane().animateLayout(150);
-            }
-        }, 4);
-               this.getToolbar().addCommandToOverflowMenu("back", null, ev -> {
-           new MyApplication().start();
-        });
-    
-    
-    
-    
-    
-    
-    
-    
-    
+        
+        PanierTempService ME = new PanierTempService();
+        
+        for (PanierTemp eee : ME.getListPant(UserService.getCurrentUser().getUser_id()) ) {
+            Oeuvre ee = new Oeuvre();
+                enc = EncodedImage.createFromImage(Image.createImage(this.getWidth()/3, this.getWidth()/3),false);  
+                      img = URLImage.createToStorage(enc, eee.getOeuv().getImg(), urlimg+eee.getOeuv().getImg());
+                    
+//            iv.setImage(img.scaled(400, 400));
+                addButton(previous, res , ee , eee ,img, eee.getOeuv().getNom(),false, eee.getOeuv().getPrix(),String.valueOf((int)eee.getQuantite())+ " Oeuvres",eee.getOeuv().getDescription());
+            
+      
+      //  addButton(res.getImage("news-item-2.jpg"), "Fusce ornare cursus masspretium tortor integer placera.", true, 15, 21);
+        //addButton(res.getImage("news-item-3.jpg"), "Maecenas eu risus blanscelerisque massa non amcorpe.", false, 36, 15);
+       // addButton(res.getImage("news-item-4.jpg"), "Pellentesque non lorem diam. Proin at ex sollicia.", false, 11, 9);
     }
+        if(ME.getListPant(UserService.getCurrentUser().getUser_id()).size()>0){
+        Button ValidPan = new Button("Valider");
+        Container content = BoxLayout.encloseY(
+                ValidPan     
+        );
+        content.setScrollableY(false);
+        add(content);
+        
+            ValidPan.addActionListener(e -> {
+                
+            
+            try{
+                
+             InfiniteProgress ip = new InfiniteProgress();
+             final Dialog iDialog = ip.showInfiniteBlocking();
+             
+             
+             CommandeService.getInstance().AjoutCmd(UserService.getCurrentUser().getUser_id());
+             
+
+             PanierService.getInstance().AjoutPan(UserService.getCurrentUser().getUser_id());
+             
+ 
+             iDialog.dispose();
+             Dialog.show("Succès","Commande Validé!",new Command("OK"));
+             new ListPan(previous, res).show();
+             refreshTheme();
+            }catch(Exception ex){
+             ex.printStackTrace();
+         }
+//            Form fm_brw = new Form("Facture");
+//            fm_brw.setLayout(new BorderLayout());
+//
+//            BrowserComponent browser = new BrowserComponent();
+//            browser.setURL(Statics.BASE_URL+"/pan/facture/pdfnav");
+//
+//            fm_brw.addComponent(BorderLayout.CENTER, browser);
+//            fm_brw.show();
+                String accountSID = "AC56f3ead8087bbfe5e27bbe684f25ebee";
+                String authToken = "21386331f18505898c1f2afb43df7514";
+                String fromPhone = "+12397348513";
+                Response<Map> result = Rest.post("https://api.twilio.com/2010-04-01/Accounts/" + accountSID + "/Messages.json").
+                basicAuth(accountSID, authToken).
+            queryParam("To", "+21651925246").
+            queryParam("From", fromPhone).
+            queryParam("Body", "Votre commande est bien validé").
+           
+            getAsJsonMap();
+                System.out.println("============" +result);
+            });
+                
+    
+    
+    }}
   
     
     private void updateArrowPosition(Button b, Label arrow) {
@@ -259,119 +278,9 @@ private void addTab(Tabs swipe, Image img, Label spacer, String text) {
 
         swipe.addTab("", page1);
     }
-          int val=0;
-      public MultiButton  addItem_Event(Event c) {
-
-        
-                MultiButton m = new MultiButton();
-                // Phediii l projet integration
-              //  String url = "http://localhost/PIDevWEB/public/PI/IMG/"+c.getImage();
-              String url = "http://127.0.0.1:8000/uploads/images/"+c.getImage();
     
-              
-                
-                
-                 m.setTextLine1(c.getTitre());
-        m.setTextLine2(c.getDomaine());
-
-           Image imge;
-        EncodedImage enc;
-        enc = EncodedImage.createFromImage(Image.createImage(this.getWidth()/3, this.getWidth()/3), false);
-        imge = URLImage.createToStorage(enc, url, url);
-            m.setIcon(imge);
-        m.setEmblem(resq.getImage("news-tab-down-arrow.png"));
-    
-       
-
-      
-        
-
-        m.addActionListener(e -> {
-
-            Form f2 = new Form("Detail",BoxLayout.y());
-           
-         
-        
-            Label Titre_lab = new Label("Titre :");
-            Label Titre_etxt = new Label(c.getTitre());
-            Label des_lab = new Label("Description:");
-            Label des_etxt = new Label(c.getDescription());
-             Label prix_lab = new Label("Prix :");
-            Label prix_etxt = new Label(String.valueOf(c.getPrix()));
-               Label date_lab = new Label("Date :");
-            Label date_etxt = new Label(c.getDate_evenement());
-             Button google_map = new Button("map");
-             
-             google_map.addActionListener(azd-> {
-               new map().start(this,c.getId());
-             
-             });
-                      
-
-            Button btn_reserve = new Button();
-            
-            Reservation_Service serv_reservation = new Reservation_Service();
-            
-            
-
-         
-            for (User_reservation user_reservation : serv_reservation.findreserve(c.getId())) {
-                
-                // el 1 ttbdl b id ta user
-                if(user_reservation.getId_user_reserve() == 1 )
-                {
-                    val=1;
-                }
-                
-            }
-            
-            if(val==0)
-            {
-                 btn_reserve.setText("Reserve"); 
-            }
-            
-          else
-            {
-                             btn_reserve.setText("Supprimer"); 
-            }
-btn_reserve.addActionListener(ll-> {
-
-
-
-if (val == 0)
-{
-     Reservation_Service rs = new Reservation_Service();
-     
-     // 1 ttbdl b id user
-    rs.addeserve(c.getId(),1);
-    Dialog.show("Add", "Add", "ok",null);
-               new ListEventForm(f2,resq).showBack();
-    
-}
-else
-{
-    Reservation_Service rs = new Reservation_Service();
-    rs.deleteeserve(c.getId());
-    Dialog.show("Delete", "Delete", "ok",null);
-           new ListEventForm(f2,resq).showBack();
-}
-
-});
-      
-                
-            f2.add(Titre_lab).add(Titre_etxt).add(des_lab).add(des_etxt).add(prix_lab).add(prix_etxt).add(date_lab).add(date_etxt).add(google_map).add(btn_reserve);
-     f2.getToolbar().addCommandToOverflowMenu("back", null, ev -> {
-           new ListEventForm(f2,resq).showBack();
-        });
- f2.show();
-        });
-      
-  
-
-       return m;
-
-    }
- private void addButton(Form previous, Resources res ,Oeuvre o ,URLImage img, String nom , boolean liked, float prix,String quantité, String description) {
+private void addButton(Form previous, Resources res ,Oeuvre o,PanierTemp s,URLImage img, String nom , boolean liked, float prix,String quantite, String description) {
+ 
        int height = Display.getInstance().convertToPixels(20f);
        int width = Display.getInstance().convertToPixels(14f);
        Button image = new Button(img.fill(width, height));
@@ -392,44 +301,51 @@ else
 //           FontImage heartImage = FontImage.createMaterial(FontImage.MATERIAL_FAVORITE, s);
 //           likes.setIcon(heartImage);
 //       }
-       Label comments = new Label(quantité , "Label");
+       Label comments = new Label(quantite , "Label");
 //       FontImage.setMaterialIcon(likes, FontImage.MATERIAL_CHAT);
-        Button btnListTasks = new Button();
-        Style s = new Style(btnListTasks.getUnselectedStyle());
+        Button btnListTasks = new Button("Supprimer");
         
-         //s.setFgColor(0xa65959);
-       FontImage ajouterP =FontImage.createMaterial(FontImage.MATERIAL_ADD_SHOPPING_CART, s);
-         btnListTasks.setIcon(ajouterP);
-         btnListTasks.setTextPosition(RIGHT);
-         
-       //  .setMaterialIcon(likes, FontImage.MATERIAL_CHAT);
-       cnt.add(BorderLayout.EAST, 
+       cnt.add(BorderLayout.CENTER, 
                BoxLayout.encloseY(
                        ta,
                        desc,
                        BoxLayout.encloseX(likes, comments)
                ));
      Container cnt1 = new Container(BoxLayout.x()); 
-     Container cnt2 = new Container(BoxLayout.xRight()); 
-       cnt1.add(cnt);           
-       cnt2.add(btnListTasks);
-        cnt1.add(cnt2); 
-       if(o.getQuantite()==0){
-           btnListTasks.setVisible(false);
-       }
+       cnt1.add(cnt);
+       cnt1.add(btnListTasks);
        add(cnt1);
+    
        
-       image.addActionListener( e -> 
-               new DetailOeuvre(previous, res, o).show()
-       );
+               
+       
 //       raef
 //       btnListTasks.addActionListener
+    
+            btnListTasks.addActionListener( e -> {
+    
+         try{ 
+             InfiniteProgress ip = new InfiniteProgress();
+             final Dialog iDialog = ip.showInfiniteBlocking();
+             
+             
+             PanierTempService.getInstance().DelPant(s.getId());
+             
+             iDialog.dispose();
+             Dialog.show("Supprimé","Oeuvre supprimé avec succès!",new Command("OK"));
+             new ListPan(previous, res).show();
+             refreshTheme();
+         }catch(Exception ex){
+             ex.printStackTrace();
+         }  
+      });
    }
     
     private void bindButtonSelection1(Form previous,Resources res, Button b, Label arrow) {
        b.addActionListener(e -> {
             if(b.isSelected()) {
                 updateArrowPosition(b, arrow);
+                new ListOeuvre(previous, res).show();
             }
         });
     }
@@ -447,6 +363,7 @@ else
        b.addActionListener(e -> {
             if(b.isSelected()) {
                 updateArrowPosition(b, arrow);
+                new ListPan(previous, res).show();
                 
             }
         });

@@ -34,8 +34,9 @@ import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.layouts.LayeredLayout;
 import com.codename1.ui.plaf.Style;
 import com.codename1.ui.util.Resources;
-import entities.Offre;
-import service.OffreService;
+import com.mycompany.myapp.entities.Offre;
+import com.mycompany.myapp.services.OffreService;
+import com.mycompany.myapp.services.UserService;
 
 
 public class MesOffres extends BaseForm {
@@ -48,7 +49,7 @@ public class MesOffres extends BaseForm {
     Label nomeve;
     Label promo;
      EncodedImage enc;
-     String urlimg = "http://localhost/PI/IMG/";
+     String urlimg = "http://localhost/PIDevWEB-main/public/PI/IMG/";
      int i = UserService.getCurrentUser().getUser_id();
     public MesOffres(Form previous, Resources res) {  
 super("Mes offres", BoxLayout.y());

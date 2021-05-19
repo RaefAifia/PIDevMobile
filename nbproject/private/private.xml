@@ -3,27 +3,6 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/1"/>
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/C:/Users/asus/Documents/NetBeansProjects/pidev_xcode/src/com/mycompany/myapp/services/ReclamationService.java</file>
-            <file>file:/C:/Users/asus/Documents/NetBeansProjects/pidev_xcode/src/com/mycompany/myapp/gui/WalkthruForm.java</file>
-            <file>file:/C:/Users/asus/Documents/NetBeansProjects/pidev_xcode/src/com/mycompany/myapp/gui/Reclamations.java</file>
-            <file>file:/C:/Users/asus/Documents/NetBeansProjects/pidev_xcode/src/com/mycompany/myapp/gui/NumConfirm.java</file>
-            <file>file:/C:/Users/asus/Documents/NetBeansProjects/pidev_xcode/src/com/mycompany/myapp/gui/HomeForm.java</file>
-            <file>file:/C:/Users/asus/Documents/NetBeansProjects/pidev_xcode/src/com/mycompany/myapp/gui/Nosartistes.java</file>
-            <file>file:/C:/Users/asus/Documents/NetBeansProjects/pidev_xcode/src/com/mycompany/myapp/gui/BaseForm.java</file>
-            <file>file:/C:/Users/asus/Documents/NetBeansProjects/pidev_xcode/src/com/mycompany/myapp/entities/Reclamation.java</file>
-            <file>file:/C:/Users/asus/Documents/NetBeansProjects/pidev_xcode/src/com/mycompany/myapp/gui/Profil.java</file>
-            <file>file:/C:/Users/asus/Documents/NetBeansProjects/pidev_xcode/src/com/mycompany/myapp/gui/login.java</file>
-            <file>file:/C:/Users/asus/Documents/NetBeansProjects/pidev_xcode/src/com/mycompany/myapp/MyApplication.java</file>
-            <file>file:/C:/Users/asus/Documents/NetBeansProjects/pidev_xcode/src/com/mycompany/myapp/gui/EmailConfirm.java</file>
-            <file>file:/C:/Users/asus/Documents/NetBeansProjects/pidev_xcode/src/com/mycompany/myapp/utils/EmailSend.java</file>
-            <file>file:/C:/Users/asus/Documents/NetBeansProjects/pidev_xcode/src/com/mycompany/myapp/gui/List.java</file>
-            <file>file:/C:/Users/asus/Documents/NetBeansProjects/pidev_xcode/src/com/mycompany/myapp/entities/User.java</file>
-            <file>file:/C:/Users/asus/Documents/NetBeansProjects/pidev_xcode/src/com/mycompany/myapp/entities/Relations.java</file>
-            <file>file:/C:/Users/asus/Documents/NetBeansProjects/pidev_xcode/src/com/mycompany/myapp/services/UserService.java</file>
-            <file>file:/C:/Users/asus/Documents/NetBeansProjects/pidev_xcode/src/com/mycompany/myapp/gui/ReclamationInfo.java</file>
-            <file>file:/C:/Users/asus/Documents/NetBeansProjects/pidev_xcode/src/com/mycompany/myapp/gui/SignUp.java</file>
-            <file>file:/C:/Users/asus/Documents/NetBeansProjects/pidev_xcode/src/com/mycompany/myapp/services/RelationService.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

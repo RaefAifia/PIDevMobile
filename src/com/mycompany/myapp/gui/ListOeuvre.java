@@ -42,9 +42,10 @@ import com.codename1.ui.layouts.GridLayout;
 import com.codename1.ui.layouts.LayeredLayout;
 import com.codename1.ui.plaf.Style;
 import com.codename1.ui.util.Resources;
-import entities.Oeuvre;
+import com.mycompany.myapp.entities.Oeuvre;
 import java.io.InputStream;
-import service.OeuvrageService;
+import com.mycompany.myapp.services.OeuvrageService;
+import com.mycompany.myapp.services.UserService;
 
 /**
  *
@@ -61,7 +62,7 @@ int i = UserService.getCurrentUser().getUser_id();
     Label nomeve;
     Label promo;
      EncodedImage enc;
-     String urlimg = "http://localhost/PI/IMG/";
+     String urlimg = "http://localhost/PIDevWEB-main/public/PI/IMG/";
     public ListOeuvre(Form previous, Resources res) {  
 super("Liste des favoris", BoxLayout.y());
 Toolbar tb = new Toolbar(true);  
