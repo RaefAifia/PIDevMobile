@@ -77,7 +77,7 @@ public class PanierTempService {
 
    public ArrayList<PanierTemp> getListPant(int uid){       
         ConnectionRequest con = new ConnectionRequest();
-    String url = Statics.BASE_URL+"/panier/temp/pant/"+uid;
+    String url = Statics.BASE_URL+"panier/temp/pant/"+uid;
      con.setUrl(url);
            con.addResponseListener(new ActionListener<NetworkEvent>() {
             @Override
@@ -94,7 +94,7 @@ public class PanierTempService {
    
    public void AjoutPanT(int id, int uid){
         ConnectionRequest con = new ConnectionRequest();
-        String url = Statics.BASE_URL+"/panier/temp/newcc/"+id+"/"+uid;
+        String url = Statics.BASE_URL+"panier/temp/newcc/"+id+"/"+uid;
         con.setUrl(url);
         con.addResponseListener((e)->{
             String str = new String(con.getResponseData());
@@ -105,7 +105,7 @@ public class PanierTempService {
    
    public void DelPant(int id){
        ConnectionRequest con = new ConnectionRequest();
-       String url = Statics.BASE_URL+"/panier/temp/delcc/"+id;
+       String url = Statics.BASE_URL+"panier/temp/delcc/"+id;
        con.setUrl(url);
        con.addResponseListener(new ActionListener<NetworkEvent>() {
             @Override
@@ -118,7 +118,7 @@ public class PanierTempService {
    
    public void UpdPant(int id){
        ConnectionRequest con = new ConnectionRequest();
-       String url = Statics.BASE_URL+"/panier/temp/updcc/"+id;
+       String url = Statics.BASE_URL+"panier/temp/updcc/"+id;
        con.setUrl(url);
        con.addResponseListener(new ActionListener<NetworkEvent>() {
             @Override

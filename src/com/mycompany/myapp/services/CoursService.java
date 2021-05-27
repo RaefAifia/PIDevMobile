@@ -60,6 +60,7 @@ public class CoursService {
                 a.setDuree(obj.get("duree").toString());
                 a.setDescription(obj.get("description").toString());
                 a.setNiveau(obj.get("niveau").toString());
+                
                  a.setMedia(obj.get("media").toString());
                 
 //                 float id = Float.parseFloat(obj.get("formationId").toString());

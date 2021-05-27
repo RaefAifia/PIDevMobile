@@ -6,14 +6,21 @@
 package com.mycompany.myapp.gui;
 
 import com.codename1.components.FloatingHint;
+import com.codename1.components.ScaleImageLabel;
 import com.codename1.ui.Button;
+import static com.codename1.ui.Component.BOTTOM;
 import com.codename1.ui.Container;
 import com.codename1.ui.Dialog;
+import com.codename1.ui.Display;
 import com.codename1.ui.Form;
+import com.codename1.ui.Image;
+import com.codename1.ui.Label;
 import com.codename1.ui.TextField;
 import com.codename1.ui.Toolbar;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
+import com.codename1.ui.layouts.LayeredLayout;
+import com.codename1.ui.plaf.Style;
 import com.codename1.ui.util.Resources;
 import com.mycompany.myapp.entities.Reclamation;
 import com.mycompany.myapp.entities.User;
@@ -35,6 +42,26 @@ public class ajouterReclamation extends BaseForm {
         getContentPane().setScrollVisible(false);
         
              super.addSideMenu(res);
+             
+             
+              Image img1 = res.getImage("11.jpg");
+        if(img1.getHeight() > Display.getInstance().getDisplayHeight() / 3) {
+            img1 = img1.scaledHeight(Display.getInstance().getDisplayHeight() / 3);
+        }
+        ScaleImageLabel sl = new ScaleImageLabel(img1);
+        sl.setUIID("BottomPad");
+        sl.setBackgroundType(Style.BACKGROUND_IMAGE_SCALED_FILL);
+
+        Label facebook = new Label("", res.getImage(""), "BottomPad");
+        Label twitter = new Label("", res.getImage(""), "BottomPad");
+        facebook.setTextPosition(BOTTOM);
+        twitter.setTextPosition(BOTTOM);
+        
+        add(LayeredLayout.encloseIn(
+                sl
+                
+        ));
+       
         TextField nom = new TextField("", "Nom de réclamation", 20, TextField.ANY);
         TextField description = new TextField("", "Description", 20, TextField.ANY);
         
@@ -51,6 +78,7 @@ public class ajouterReclamation extends BaseForm {
         x.setUIID("labelMIMI");
         concernant.setUIID("labelMIMI");
         Button next = new Button("Confirmer");
+        Button next1 = new Button("Retour");
         
         Container content = BoxLayout.encloseY(
                 new FloatingHint(nom),
@@ -62,7 +90,8 @@ public class ajouterReclamation extends BaseForm {
                 new FloatingHint(concernant),
                 createLineSeparator(),
                 
-                next
+                next, 
+                next1
                
                 
         );
@@ -85,6 +114,10 @@ public class ajouterReclamation extends BaseForm {
             ex.printStackTrace();
         }
              
+         });
+         next1.addActionListener((evt) -> {
+              Form f = new Form();
+             new Reclamations(f,res).show();
          });
 }
 }

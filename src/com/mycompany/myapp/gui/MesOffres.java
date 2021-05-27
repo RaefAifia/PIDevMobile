@@ -165,7 +165,7 @@ private void addTab(Tabs swipe, Image img, Label spacer, String text) {
      int height = Display.getInstance().convertToPixels(20f);
        int width = Display.getInstance().convertToPixels(14f);
        TextArea ta = new TextArea(nom);
-       ta.setUIID("NewsTopLine");
+       ta.setUIID("NewsTopLine1");
        ta.setEditable(false);
        Label desc = new Label(description, "Label");
        Label dat = new Label(date , "Label");

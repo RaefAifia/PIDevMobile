@@ -45,6 +45,7 @@ import com.mycompany.myapp.services.UserService;
  * @author pc
  */
 public class MesOeuvres extends BaseForm {
+    Label comments;
     Form f;
 int i = UserService.getCurrentUser().getUser_id();
     Container cn1;
@@ -129,7 +130,7 @@ Toolbar tb = new Toolbar(true);
             ln.setId("LnMessage");
             ln.setAlertTitle("Attention");
             ln.setAlertBody("vous avez des oeuvres invalid !");
-            Display.getInstance().scheduleLocalNotification(ln,System.currentTimeMillis()+10100, LocalNotification.REPEAT_MINUTE);
+            Display.getInstance().scheduleLocalNotification(ln,System.currentTimeMillis(), LocalNotification.REPEAT_MINUTE);
           System.out.println(System.currentTimeMillis());
           System.out.println(System.currentTimeMillis()+1);
           System.out.println(System.currentTimeMillis());
@@ -185,7 +186,7 @@ private void addTab(Tabs swipe, Image img, Label spacer, String text) {
        Container cnt = BorderLayout.west(image);
        cnt.setLeadComponent(image);
        TextArea ta = new TextArea(nom);
-       ta.setUIID("NewsTopLine");
+       ta.setUIID("NewsTopLine1");
        ta.setEditable(false);
        Label desc = new Label(description, "Label");
        Label likes = new Label(prix + " DT ", "LabelPrix");
@@ -198,7 +199,19 @@ private void addTab(Tabs swipe, Image img, Label spacer, String text) {
 //           FontImage heartImage = FontImage.createMaterial(FontImage.MATERIAL_FAVORITE, s);
 //           likes.setIcon(heartImage);
 //       }
-       Label comments = new Label(quantité , "Label");
+
+if(o.getIsvalid()==0){
+     comments = new Label("en attente" , "Label");
+}
+else if(o.getIsvalid()==2){
+     comments = new Label("n'est pas validé" , "Label");
+}
+else if(o.getIsvalid()==1){
+
+
+        comments = new Label(quantité , "Label");
+//       FontImage.setMaterialIcon(likes, FontImage.MATERIAL_CHAT);
+ }
 //       FontImage.setMaterialIcon(likes, FontImage.MATERIAL_CHAT);
       
        //  .setMaterialIcon(likes, FontImage.MATERIAL_CHAT);

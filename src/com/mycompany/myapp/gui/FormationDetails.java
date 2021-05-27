@@ -287,7 +287,7 @@ public class FormationDetails  extends BaseForm{
     initStarRankStyle(s.getSliderFullUnselectedStyle(), fullStar);
     s.setPreferredSize(new Dimension(fullStar.getWidth() * 5, fullStar.getHeight()));
      Button btnE = new Button("Enregistrer votre notation");
-     Label l1 = new Label ("Vous pouvez noter cette formation");
+    // Label l1 = new Label ("Vous pouvez noter cette formation");
       Font mediumBoldSystemFont = Font.createSystemFont(Font.FACE_SYSTEM, Font.STYLE_BOLD, Font.SIZE_MEDIUM);
       
      Label l = new Label ("Note");

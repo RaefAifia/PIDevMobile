@@ -183,7 +183,7 @@ addTab(swipe, res.getImage("news-item.jpg"), spacer1, " ");
           ImageViewer img = new ImageViewer();
             EncodedImage placeholder = EncodedImage.createFromImage(Image.createImage(this.getWidth()/3, this.getWidth()/3),false);
             URLImage urlImage = URLImage.createToStorage(placeholder, cc.getFile(), "http://localhost/PIDevWEB-main/public/PI/IMG/"+cc.getFile());
-            img.setImage(urlImage);
+          //  img.setImage(urlImage);
             
   
    String urlM = "http://localhost/PIDevWEB-main/public/PI/IMG/"+cc.getMedia();
@@ -202,6 +202,7 @@ addTab(swipe, res.getImage("news-item.jpg"), spacer1, " ");
             Display.getInstance().execute(fileName);
        
          });
+//     if (cc.getMedia()!=null){
        Button fileVideo = new Button("Visualiser les videos");
          fileVideo.addActionListener(e -> {
        FileSystemStorage fss = FileSystemStorage.getInstance();
@@ -209,14 +210,13 @@ addTab(swipe, res.getImage("news-item.jpg"), spacer1, " ");
              System.out.println(fileName);
         if (!fss.exists(fileName)) {
           Util.downloadUrlToFile("http://localhost/PIDevWEB-main/public/PI/IMG/"+cc.getCours_id(), fileName, true);
-        
-            } 
+ } 
             Display.getInstance().execute(fileName);
-       
-         });
+        
+         });//}
       //  current.add(back);
       this.add(filepdf);
-      this.add(fileVideo);
+     this.add(fileVideo);
       this.show();
 
 //      

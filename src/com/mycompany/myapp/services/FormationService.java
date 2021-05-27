@@ -347,10 +347,10 @@ public class FormationService {
         NetworkManager.getInstance().addToQueueAndWait(con);
         return responseResult;
     }
-       public boolean isRated (int v, Formation f) throws IOException{
+       public boolean isRated (int v, Formation f, int id) throws IOException{
 
         ConnectionRequest con = new ConnectionRequest();
-        String url =  Statics.BASE_URL+ "formation/rated?user="+1+"&formation="+f.getFormation_id();
+        String url =  Statics.BASE_URL+ "formation/rated?user="+id+"&formation="+f.getFormation_id();
     
 
         System.out.println(url);
@@ -359,32 +359,34 @@ public class FormationService {
             @Override
             public void actionPerformed(NetworkEvent evt) {
 
-               responseResult = con.getResponseCode() == 200; //Code HTTP 200 OK
-                con.removeResponseListener(this);
-            }
+             String jsonText =  new String(con.getResponseData());
+                    JSONParser j = new JSONParser();
+              
+        }
+            
         });
         
         NetworkManager.getInstance().addToQueueAndWait(con);
         return responseResult;
     } 
     
-    
-            public ArrayList<Formation> getSearchR(String nom){
-        String url = "http://127.0.0.1:8000/formation/recherche/" + nom;
-        req.setUrl(url);
-       // req.setPost(false);
-        req.addResponseListener(new ActionListener<NetworkEvent>() {
-            @Override
-            public void actionPerformed(NetworkEvent evt) {
-                try {
-                    //   users = parseUser(new String(req.getResponseData()));
-                    listFormation = listFormation(new String(req.getResponseData()));
-                } catch (ParseException ex) {
-                    System.out.println( ex.getMessage());                 }
-                req.removeResponseListener(this);
-            }
-        });
-        NetworkManager.getInstance().addToQueueAndWait(req);
-        return listFormation;
-    }
+//     
+//            public ArrayList<Formation> getSearchR(String nom){
+//        String url = "http://127.0.0.1:8000/formation/recherche/" + nom;
+//        req.setUrl(url);
+//       // req.setPost(false);
+//        req.addResponseListener(new ActionListener<NetworkEvent>() {
+//            @Override
+//            public void actionPerformed(NetworkEvent evt) {
+//                try {
+//                    //   users = parseUser(new String(req.getResponseData()));
+//                    listFormation = listFormation(new String(req.getResponseData()));
+//                } catch (ParseException ex) {
+//                    System.out.println( ex.getMessage());                 }
+//                req.removeResponseListener(this);
+//            }
+//        });
+//        NetworkManager.getInstance().addToQueueAndWait(req);
+//        return listFormation;
+//    }
 }

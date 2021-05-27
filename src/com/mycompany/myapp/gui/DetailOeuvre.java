@@ -6,15 +6,18 @@
 package com.mycompany.myapp.gui;
 
 import com.codename1.components.ImageViewer;
+import com.codename1.components.InfiniteProgress;
 import com.codename1.components.ScaleImageLabel;
 import com.codename1.components.SpanLabel;
-import com.codename1.ui.Button;
+import com.codename1.ui.Button; 
 import com.codename1.ui.ButtonGroup;
+import com.codename1.ui.Command;
 import com.codename1.ui.Component;
 import static com.codename1.ui.Component.BOTTOM;
 import static com.codename1.ui.Component.CENTER;
 import static com.codename1.ui.Component.RIGHT;
 import com.codename1.ui.Container;
+import com.codename1.ui.Dialog;
 import com.codename1.ui.Display;
 import com.codename1.ui.EncodedImage;
 import com.codename1.ui.Font;
@@ -45,11 +48,13 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.mycompany.myapp.entities.Oeuvre;
+import com.mycompany.myapp.entities.PanierTemp;
 import com.mycompany.myapp.entities.RatingO;
 //import entities.Oeuvre;
 //import entities.RatingO;
-
+import java.util.List;
 import com.mycompany.myapp.services.FavorisOService;
+import com.mycompany.myapp.services.PanierTempService;
 import com.mycompany.myapp.services.RatingOService;
 import com.mycompany.myapp.services.UserService;
 
@@ -60,7 +65,7 @@ import com.mycompany.myapp.services.UserService;
 public class DetailOeuvre extends BaseForm{
     Label comments ;
        RatingOService r = new RatingOService();
-        int i = UserService.getCurrentUser().getUser_id();
+        int idc = UserService.getCurrentUser().getUser_id();
 RatingO rtest = new RatingO();
 Container cnt1;
  Form f1;
@@ -180,7 +185,7 @@ Toolbar tb = new Toolbar(true);
    FavorisOService f = new FavorisOService();
 Button b= new Button("  ","ButtonF");
 Oeuvre test = new Oeuvre();
-FavorisOService.getInstance().isfav(o, i, test);
+FavorisOService.getInstance().isfav(o, idc, test);
      
        Style s = new Style(b.getUnselectedStyle());
        Style s1 = new Style(b.getUnselectedStyle());
@@ -194,16 +199,16 @@ FavorisOService.getInstance().isfav(o, i, test);
      b.setIcon(heartImage);
  }
   b.addActionListener( e -> {
-     FavorisOService.getInstance().isfav(o, i, test);
+     FavorisOService.getInstance().isfav(o, idc, test);
         
     
      if(test.getOeuvrage_id()==0) {
           // FontImage.setMaterialIcon(b, FontImage.MATERIAL_FAVORITE);
-            FavorisOService.getInstance().ajoutFAv(o,i);
+            FavorisOService.getInstance().ajoutFAv(o,idc);
             FontImage heartImage = FontImage.createMaterial(FontImage.MATERIAL_FAVORITE, s);
            b.setIcon(heartImage);
  } else {   
-         FavorisOService.getInstance().suppFAv(o,1);
+         FavorisOService.getInstance().suppFAv(o,idc);
           FontImage heartImage = FontImage.createMaterial(FontImage.MATERIAL_FAVORITE, s1);
            b.setIcon(heartImage);
  } 
@@ -237,13 +242,7 @@ add(iv);
 
 
 
- 
- 
-    // ServiceRating serv = new ServiceRating();
-           
-           
-
- RatingOService.getInstance().israte(o, i, rtest);
+ RatingOService.getInstance().israte(o, idc, rtest);
  int value = (int)rtest.getNote();             
  if (value!=-1)
                     showStarPickingForm(this,value, o);
@@ -257,12 +256,63 @@ add(iv);
             
 
 
-// raef
-Button breclam = new Button("Ajouter au panier");
 
+Button bp = new Button("Ajouter au panier");
+bp.addActionListener( e -> {
+          
+         
+          int i;
+          boolean exists=false;
+          List<PanierTemp> lpt = PanierTempService.getInstance().getListPant(idc);
+            PanierTemp pt = new PanierTemp();
+             for(i=0;i<lpt.size();i++){
+                 
+                 if(lpt.get(i).getOeuv().equals(o)){
+                     
+                     exists = true;
+                     lpt.get(i);
+                     break;
+                     }
+                };
+                try{
+             if(!exists){
+                 
+             InfiniteProgress ip = new InfiniteProgress();
+             final Dialog iDialog = ip.showInfiniteBlocking();
+             
+             PanierTempService.getInstance().AjoutPanT(o.getOeuvrage_id(),idc);
+             
+             iDialog.dispose();
+             Dialog.show("Succès","Oeuvre ajouté au panier!",new Command("OK"));
+             new ListPan(previous, res).show();
+             refreshTheme();
+                
+                 }else if(lpt.get(i).getQuantite() >= o.getQuantite()){
 
+                       InfiniteProgress ip = new InfiniteProgress();
+                         final Dialog iDialog = ip.showInfiniteBlocking();
+                         iDialog.dispose();
+                         Dialog.show("Echec","Stock Insuffisant",new Command("OK"));
+                         new ListPan(previous, res).show();
+                         refreshTheme();
+                     }else{
+
+                 InfiniteProgress ip = new InfiniteProgress();
+                 final Dialog iDialog = ip.showInfiniteBlocking();
+                 
+                 PanierTempService.getInstance().UpdPant(lpt.get(i).getId());
+                 
+                 iDialog.dispose();
+                 Dialog.show("Exist","Oeuvre existe deja! Quantité incrémenté!",new Command("OK"));
+                 new ListPan(previous, res).show();
+                 refreshTheme();
+             }
+         }catch(Exception ex){
+             ex.printStackTrace();
+         }  
+      });
 add(cnt1);
-         add(breclam);
+         add(bp);
 //}
 
       }  
@@ -355,13 +405,13 @@ add(cnt1);
         }
         else starRank.setEditable(true);
         starRank.addActionListener(e -> {
-        RatingOService.getInstance().israte(o, i, rtest);
+        RatingOService.getInstance().israte(o, idc, rtest);
       int value = (int)rtest.getNote();             
     if (value!=-1)
         {
 //           
             System.out.println(starRank.getProgress());
-            r.modifiernote(o, i,starRank.getProgress());
+            r.modifiernote(o, idc,starRank.getProgress());
             
             
             
@@ -370,7 +420,7 @@ add(cnt1);
         }
               else {
             System.out.println(starRank.getProgress());
-                r.ajoutnote(o,i,starRank.getProgress());
+                r.ajoutnote(o,idc,starRank.getProgress());
               }
 
         });

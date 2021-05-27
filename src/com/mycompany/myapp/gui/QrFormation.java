@@ -115,8 +115,6 @@ ImageViewer image= new ImageViewer(imgQ);
     
     
     
-    
-    
 public void addTab(Tabs swipe, Image img, Label spacer, String text) {
         int size = Math.min(Display.getInstance().getDisplayWidth(), Display.getInstance().getDisplayHeight());
         if(img.getHeight() < size) {

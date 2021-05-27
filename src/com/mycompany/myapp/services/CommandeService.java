@@ -70,7 +70,7 @@ public class CommandeService {
        
         public void AjoutCmd(int uid){
         ConnectionRequest con = new ConnectionRequest();
-        String url = Statics.BASE_URL+"/commande/newcc/"+uid;
+        String url = Statics.BASE_URL+"commande/newcc/"+uid;
         
         con.setUrl(url);
         con.addResponseListener((e)->{

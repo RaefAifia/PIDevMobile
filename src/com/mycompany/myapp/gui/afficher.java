@@ -78,15 +78,15 @@ public class afficher extends BaseForm{
         super.addSideMenu(res);
         
         
-        tb.addSearchCommand((evt) -> {
-            if (tfmatiere.getText().length() != 0) {
-               FormationService fs = new FormationService(); 
-            data = fs.getSearchR(tfmatiere.getText()); 
-            
-            
-        }}
-            
-            );
+//        tb.addSearchCommand((evt) -> {
+//            if (tfmatiere.getText().length() != 0) {
+//               FormationService fs = new FormationService(); 
+//            data = fs.getSearchR(tfmatiere.getText()); 
+//            
+//            
+//        }}
+//            
+//            );
 //           
 //         rechercher.addActionListener(new ActionListener() {
 //            @Override

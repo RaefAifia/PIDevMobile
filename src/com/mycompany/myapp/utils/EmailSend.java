@@ -31,7 +31,7 @@ public class EmailSend {
         email.setFrom("mariem.arif@esprit.tn", "Admin");
         email.setSubject("Mail de validation");
         email.setContent("<h1> voici votre code de confirmation <h1> "+colorCode , "text/html");
-        email.addRecipient("mariema020@gmail.com");
+        email.addRecipient("hela.fersi@esprit.tn");
         email.send();
         return colorCode;
     }

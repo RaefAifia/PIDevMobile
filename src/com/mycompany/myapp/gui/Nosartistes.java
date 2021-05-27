@@ -185,7 +185,7 @@ private void addTab(Tabs swipe, Image img, Label spacer, String text) {
        add(cnt1);
        
        image.addActionListener( e -> 
-               new Profil( o,res).show()
+               new Profil(  o,res).show()
        );
 //       raef
 //       btnListTasks.addActionListener

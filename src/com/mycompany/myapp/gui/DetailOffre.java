@@ -71,7 +71,7 @@ Toolbar tb = new Toolbar(true);
         Tabs swipe = new Tabs();
         Label spacer1 = new Label();
         Label spacer2 = new Label();
-       addTab(swipe, res.getImage("news-item.jpg"), spacer1, " détail d'oeuvre");
+       addTab(swipe, res.getImage("news-item.jpg"), spacer1, " détail d'offre");
         swipe.setUIID("Container");
         swipe.getContentPane().setUIID("Container");
         swipe.hideTabs();
@@ -145,7 +145,8 @@ Toolbar tb = new Toolbar(true);
             );
          
 String data = "Monsieur/Madame :"+i+"\n a gagné l'offre "+o.getNom()+"\n"+o.getDescription()+"\n Veuillez en profiter avant : \n"+o.getDate() ;
-int sizecode = 300;
+         System.out.println(data);
+int sizecode = 200;
 Button breclam = new Button("utiliser cet offre");
 breclam.addActionListener( e -> {
               
@@ -155,7 +156,7 @@ breclam.addActionListener( e -> {
         BitMatrix bitMatrix = generateMatrix(data, sizecode);
      
         // write in a file
-        Image qr = getImageFromBitMatrix(300, 300, bitMatrix);
+        Image qr = getImageFromBitMatrix(200, 200, bitMatrix);
         ImageViewer qv = new ImageViewer();
         qv.setImage(qr);
             System.out.println("laaaaaaa"+qr.toString());
@@ -172,14 +173,13 @@ breclam.addActionListener( e -> {
         image.setUIID("Container");
         image.setBackgroundType(Style.BACKGROUND_IMAGE_SCALED_FILL);
         Label nom = new Label(o.getNom(), "PrixLabel");
-        Label des = new Label(o.getDescription()+"   ", "NewsTopLine");
+        Label des = new Label(o.getDescription()+"   ", "NewsTopLine1");
         Label det = new Label("Valable jusqu'à", "Label");
         Label overlay = new Label(o.getDate(), "Label");
          
         
         Container page2 = 
             LayeredLayout.encloseIn(
-                
                 
                     BoxLayout.encloseY(
                             new Label(" "),
@@ -228,19 +228,33 @@ breclam.addActionListener( e -> {
                              new Label(""),
                              new Label(""),
                              new Label(""),
-                               det,
-                               overlay),
-                     BoxLayout.encloseY(
-                             new Label(qr),
                               new Label(""),
                              new Label(""),
                              new Label(""),
-                             new Label("")
+                             new Label(""),
+                             new Label(""),
+                             new Label(""),
+                             new Label(""),
+                             new Label(""),
+                             new Label(""),
+                             new Label(""),
+                               det,
+                               overlay),
+                     BoxLayout.encloseY(
+                             new Label(qr)
+                             
                          ) ))
             );
+         Button b = new Button("Revenir à la liste");
+b.addActionListener( evt -> {
+               
+                new MesOffres(previous, res).show();
+});
+        
         detaille = new Form();
         detaille.add(page2);
           detaille.add(page1);
+          detaille.add(b);
             detaille.show();
 }
        );

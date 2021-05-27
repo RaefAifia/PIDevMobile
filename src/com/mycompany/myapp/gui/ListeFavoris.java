@@ -208,7 +208,7 @@ private void addTab(Tabs swipe, Image img, Label spacer, String text) {
        Container cnt = BorderLayout.west(image);
        cnt.setLeadComponent(image);
        TextArea ta = new TextArea(nom);
-       ta.setUIID("NewsTopLine");
+       ta.setUIID("NewsTopLine1");
        ta.setEditable(false);
        Label desc = new Label(description, "Label");
        Label likes = new Label(prix + " DT ", "LabelPrix");
@@ -259,7 +259,7 @@ private void addTab(Tabs swipe, Image img, Label spacer, String text) {
        b.addActionListener(e -> {
             if(b.isSelected()) {
                 updateArrowPosition(b, arrow);
-                 //raef
+                new ListPan(previous, res).show();
             }
         });
     }

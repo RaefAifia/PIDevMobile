@@ -16,6 +16,7 @@ import com.codename1.io.Log;
 import com.codename1.io.Util;
 import com.codename1.ui.Button;
 import com.codename1.ui.ButtonGroup;
+import com.codename1.ui.Command;
 import com.codename1.ui.Component;
 import static com.codename1.ui.Component.CENTER;
 import static com.codename1.ui.Component.TOP;
@@ -43,8 +44,10 @@ import com.codename1.ui.layouts.LayeredLayout;
 import com.codename1.ui.plaf.Style;
 import com.codename1.ui.util.Resources;
 import com.mycompany.myapp.entities.Oeuvre;
+import com.mycompany.myapp.entities.PanierTemp;
 import java.io.InputStream;
 import com.mycompany.myapp.services.OeuvrageService;
+import com.mycompany.myapp.services.PanierTempService;
 import com.mycompany.myapp.services.UserService;
 
 /**
@@ -260,7 +263,60 @@ private void addTab(Tabs swipe, Image img, Label spacer, String text) {
                new DetailOeuvre(previous, res, o).show()
        );
 //       raef
-//       btnListTasks.addActionListener
+      btnListTasks.addActionListener( e -> {
+          
+         
+          int i;
+          boolean exists=false;
+          java.util.List<PanierTemp> lpt = PanierTempService.getInstance().getListPant( UserService.getCurrentUser().getUser_id());
+            PanierTemp pt = new PanierTemp();
+             for(i=0;i<lpt.size();i++){
+                 
+                 if(lpt.get(i).getOeuv().equals(o)){
+                     
+                     exists = true;
+                     lpt.get(i);
+                     break;
+                     }
+                };
+                try{
+             if(!exists){
+                 
+             InfiniteProgress ip = new InfiniteProgress();
+             final Dialog iDialog = ip.showInfiniteBlocking();
+             
+             PanierTempService.getInstance().AjoutPanT(o.getOeuvrage_id(), UserService.getCurrentUser().getUser_id());
+             
+             iDialog.dispose();
+             Dialog.show("Succès","Oeuvre ajouté au panier!",new Command("OK"));
+             new ListPan(previous, res).show();
+             refreshTheme();
+                
+                 }else if(lpt.get(i).getQuantite() >= o.getQuantite()){
+
+                       InfiniteProgress ip = new InfiniteProgress();
+                         final Dialog iDialog = ip.showInfiniteBlocking();
+                         iDialog.dispose();
+                         Dialog.show("Echec","Stock Insuffisant",new Command("OK"));
+                         new ListPan(previous, res).show();
+                         refreshTheme();
+                     }else{
+
+                 InfiniteProgress ip = new InfiniteProgress();
+                 final Dialog iDialog = ip.showInfiniteBlocking();
+                 
+                 PanierTempService.getInstance().UpdPant(lpt.get(i).getId());
+                 
+                 iDialog.dispose();
+                 Dialog.show("Exist","Oeuvre existe deja! Quantité incrémenté!",new Command("OK"));
+                 new ListPan(previous, res).show();
+                 refreshTheme();
+             }
+         }catch(Exception ex){
+             ex.printStackTrace();
+         }  
+      });
+
    }
     
     private void bindButtonSelection1(Form previous,Resources res, Button b, Label arrow) {
@@ -284,7 +340,8 @@ private void addTab(Tabs swipe, Image img, Label spacer, String text) {
        b.addActionListener(e -> {
             if(b.isSelected()) {
                 updateArrowPosition(b, arrow);
-                //raef
+               
+                new ListPan(previous, res).show();
             }
         });
     }

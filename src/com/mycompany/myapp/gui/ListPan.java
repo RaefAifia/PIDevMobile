@@ -179,8 +179,24 @@ public class ListPan extends Form{
                       img = URLImage.createToStorage(enc, eee.getOeuv().getImg(), urlimg+eee.getOeuv().getImg());
                     
 //            iv.setImage(img.scaled(400, 400));
-                addButton(previous, res , ee , eee ,img, eee.getOeuv().getNom(),false, eee.getOeuv().getPrix(),String.valueOf((int)eee.getQuantite())+ " Oeuvres",eee.getOeuv().getDescription());
-            
+int j;
+            boolean stock=false;
+          
+          List<PanierTemp> lpt = PanierTempService.getInstance().getListPant(UserService.getCurrentUser().getUser_id());
+          
+             for(j=0;j<lpt.size();j++){
+                 
+                 if( lpt.get(j).getOeuv().getQuantite()==0 ){
+                     
+                     stock = true;
+                     lpt.get(j);
+                     break;
+                     }
+                };
+                if(stock){
+                    ME.DelPant(lpt.get(j).getId());
+                }else{       addButton(previous, res , ee , eee ,img, eee.getOeuv().getNom(),false, eee.getOeuv().getPrix(),String.valueOf((int)eee.getQuantite())+ " Oeuvres",eee.getOeuv().getDescription());
+}
       
       //  addButton(res.getImage("news-item-2.jpg"), "Fusce ornare cursus masspretium tortor integer placera.", true, 15, 21);
         //addButton(res.getImage("news-item-3.jpg"), "Maecenas eu risus blanscelerisque massa non amcorpe.", false, 36, 15);
@@ -288,7 +304,7 @@ private void addButton(Form previous, Resources res ,Oeuvre o,PanierTemp s,URLIm
        Container cnt = BorderLayout.west(image);
        cnt.setLeadComponent(image);
        TextArea ta = new TextArea(nom);
-       ta.setUIID("NewsTopLine");
+       ta.setUIID("NewsTopLine1");
        ta.setEditable(false);
        Label desc = new Label(description, "Label");
        Label likes = new Label(prix + " DT ", "LabelPrix");
@@ -303,7 +319,13 @@ private void addButton(Form previous, Resources res ,Oeuvre o,PanierTemp s,URLIm
 //       }
        Label comments = new Label(quantite , "Label");
 //       FontImage.setMaterialIcon(likes, FontImage.MATERIAL_CHAT);
-        Button btnListTasks = new Button("Supprimer");
+       Button btnListTasks = new Button();
+        Style a = new Style(btnListTasks.getUnselectedStyle());
+        
+         //s.setFgColor(0xa65959);
+       FontImage ajouterP =FontImage.createMaterial(FontImage.MATERIAL_REMOVE_SHOPPING_CART, a);
+         btnListTasks.setIcon(ajouterP);
+         btnListTasks.setTextPosition(RIGHT);
         
        cnt.add(BorderLayout.CENTER, 
                BoxLayout.encloseY(
